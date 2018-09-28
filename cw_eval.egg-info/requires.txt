@@ -1,0 +1,11 @@
+shapely
+rtree
+tqdm
+geopandas
+pandas
+
+[test]
+mock
+pytest
+pytest-cov
+codecov

@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: cw-eval
+Version: 0.1
+Summary: Provide Evaluation Metrics for Machine Learning Challenges
+Home-page: https://github.com/CosmiQ/cw_eval
+Author: David Lindenbaum
+Author-email: dlindenbaum@iqt.org
+License: BSD
+Description: UNKNOWN
+Keywords: spacenet machinelearning iou aws
+Platform: UNKNOWN
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: Scientific/Engineering :: GIS
+Provides-Extra: test

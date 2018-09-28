@@ -1,0 +1,9 @@
+cw_eval/__init__.py
+cw_eval/baseeval.py
+cw_eval/evalfunctions.py
+cw_eval.egg-info/PKG-INFO
+cw_eval.egg-info/SOURCES.txt
+cw_eval.egg-info/dependency_links.txt
+cw_eval.egg-info/not-zip-safe
+cw_eval.egg-info/requires.txt
+cw_eval.egg-info/top_level.txt
