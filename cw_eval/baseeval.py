@@ -2,6 +2,7 @@ import shapely.wkt
 import geopandas as gpd
 import pandas as pd
 from tqdm import tqdm
+import os
 from cw_eval import evalfunctions as eF
 
 
@@ -24,18 +25,21 @@ class eval_base():
 
     def eval_iou(self, miniou=0.5, iou_field_prefix='iou_score',
                  ground_truth_class_field='',
-                 calculate_class_scores=True
+                 calculate_class_scores=True,
+                 class_list=['all']
                  ):
+
+
 
         scoring_dict_list = []
         if calculate_class_scores:
-            class_list = list(self.ground_truth_GDF['condition'].unique())
-            class_list.extend(list(self.proposal_GDF['__max_conf_class'].unique()))
+            class_list.extend(list(self.ground_truth_GDF['condition'].unique()))
+            if not self.proposal_GDF.empty:
+                class_list.extend(list(self.proposal_GDF['__max_conf_class'].unique()))
             class_list = list(set(class_list))
-            class_list.append('all')
 
-        else:
-            class_list = ['all']
+
+
 
 
 
@@ -78,12 +82,32 @@ class eval_base():
                     else:
                         self.proposal_GDF.loc[pred_row.name, iou_field] = 0
 
-            TruePos = self.proposal_GDF[self.proposal_GDF[iou_field]>=miniou].shape[0]
-            FalsePos = self.proposal_GDF[self.proposal_GDF[iou_field]<miniou].shape[0]
+            if self.proposal_GDF.empty:
+                TruePos = 0
+                FalsePos = 0
+            else:
+                TruePos = self.proposal_GDF[self.proposal_GDF[iou_field]>=miniou].shape[0]
+                FalsePos = self.proposal_GDF[self.proposal_GDF[iou_field]<miniou].shape[0]
+
             FalseNeg = self.ground_truth_GDF_Edit.shape[0]
-            Precision = TruePos / float(TruePos + FalsePos)
-            Recall    = TruePos / float(TruePos + FalseNeg)
-            F1Score   = 2*Precision*Recall/(Precision+Recall)
+
+            if float(TruePos+FalsePos) > 0:
+
+                Precision = TruePos / float(TruePos + FalsePos)
+
+            else:
+                Precision = 0
+
+            if float(TruePos + FalseNeg) > 0:
+                Recall    = TruePos / float(TruePos + FalseNeg)
+
+            else:
+                Recall = 0
+
+            if Recall*Precision>0:
+                F1Score   = 2*Precision*Recall/(Precision+Recall)
+            else:
+                F1Score   = 0
 
             score_calc = {'class_id': class_id,
                           'iou_field': iou_field,
@@ -103,23 +127,28 @@ class eval_base():
                       conf_field_mapping=[]):
 
         ## Load Proposal
-        if proposalCSV:
-            pred_data = pd.read_csv(proposal_vector_file)
-            self.proposal_GDF = gpd.GeoDataFrame(pred_data,
-                                        geometry=[shapely.wkt.loads(pred_row['coords_geo']) for idx, pred_row in
-                                                  pred_data.iterrows()])
+        if os.path.isfile(proposal_vector_file):
+            if proposalCSV:
+                pred_data = pd.read_csv(proposal_vector_file)
+                self.proposal_GDF = gpd.GeoDataFrame(pred_data,
+                                            geometry=[shapely.wkt.loads(pred_row['coords_geo']) for idx, pred_row in
+                                                      pred_data.iterrows()])
 
 
+            else:
+                self.proposal_GDF = gpd.read_file(proposal_vector_file)
+
+            self.proposal_GDF['__total_conf'] = self.proposal_GDF[conf_field_list].max(axis=1)
+            self.proposal_GDF['__max_conf_class'] = self.proposal_GDF[conf_field_list].idxmax(axis=1)
+
+            if conf_field_mapping:
+                self.proposal_GDF['__max_conf_class'] = [conf_field_mapping[item] for item in self.proposal_GDF['__max_conf_class'].values]
+
+            self.proposal_GDF = self.proposal_GDF.sort_values(by='__total_conf', ascending=False)
         else:
-            self.proposal_GDF = gpd.read_file(proposal_vector_file)
 
-        self.proposal_GDF['__total_conf'] = self.proposal_GDF[conf_field_list].max(axis=1)
-        self.proposal_GDF['__max_conf_class'] = self.proposal_GDF[conf_field_list].idxmax(axis=1)
 
-        if conf_field_mapping:
-            self.proposal_GDF['__max_conf_class'] = [conf_field_mapping[item] for item in self.proposal_GDF['__max_conf_class'].values]
-
-        self.proposal_GDF = self.proposal_GDF.sort_values(by='__total_conf', ascending=False)
+            self.proposal_GDF = gpd.GeoDataFrame(geometry=[])
 
         return 0
 
