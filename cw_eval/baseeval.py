@@ -138,8 +138,13 @@ class eval_base():
             else:
                 self.proposal_GDF = gpd.read_file(proposal_vector_file)
 
-            self.proposal_GDF['__total_conf'] = self.proposal_GDF[conf_field_list].max(axis=1)
-            self.proposal_GDF['__max_conf_class'] = self.proposal_GDF[conf_field_list].idxmax(axis=1)
+            if conf_field_list:
+                self.proposal_GDF['__total_conf'] = self.proposal_GDF[conf_field_list].max(axis=1)
+                self.proposal_GDF['__max_conf_class'] = self.proposal_GDF[conf_field_list].idxmax(axis=1)
+            else:
+                self.proposal_GDF['__total_conf']=1.0
+                self.proposal_GDF['__max_conf_class']=1
+
 
             if conf_field_mapping:
                 self.proposal_GDF['__max_conf_class'] = [conf_field_mapping[item] for item in self.proposal_GDF['__max_conf_class'].values]
