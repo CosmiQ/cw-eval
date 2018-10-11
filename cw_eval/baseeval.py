@@ -86,8 +86,14 @@ class eval_base():
                 TruePos = 0
                 FalsePos = 0
             else:
-                TruePos = self.proposal_GDF[self.proposal_GDF[iou_field]>=miniou].shape[0]
-                FalsePos = self.proposal_GDF[self.proposal_GDF[iou_field]<miniou].shape[0]
+                try:
+                    TruePos = self.proposal_GDF[self.proposal_GDF[iou_field]>=miniou].shape[0]
+                    FalsePos = self.proposal_GDF[self.proposal_GDF[iou_field]<miniou].shape[0]
+                except:
+                    print("iou field {} missing")
+                    TruePos = 0
+                    FalsePos = 0
+
 
             FalseNeg = self.ground_truth_GDF_Edit.shape[0]
 
