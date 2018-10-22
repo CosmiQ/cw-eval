@@ -4,6 +4,7 @@ import pandas as pd
 from tqdm import tqdm
 import os
 from cw_eval import evalfunctions as eF
+from fiona._err import CPLE_OpenFailedError
 
 
 
@@ -13,7 +14,12 @@ class eval_base():
     def __init__(self, ground_truth_vector_file):
 
         ## Load Ground Truth : Ground Truth should be in geojson or shape file
-        self.ground_truth_GDF = gpd.read_file(ground_truth_vector_file)
+        try:
+            self.ground_truth_GDF = gpd.read_file(ground_truth_vector_file)
+        except CPLE_OpenFailedError:  # handles empty geojson
+            self.ground_truth_GDF = gpd.GeoDataFrame({'sindex': [],
+                                                      'condition': [],
+                                                      'geometry': []})
         # force calculation of spatialindex
         self.ground_truth_sindex = self.ground_truth_GDF.sindex
 
@@ -166,12 +172,3 @@ class eval_base():
     def eval(self, type='iou'):
 
         pass
-
-
-
-
-
-
-
-
-
