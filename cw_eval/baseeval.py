@@ -11,15 +11,13 @@ from fiona._err import CPLE_OpenFailedError
 
 class eval_base():
 
-    def __init__(self, ground_truth_vector_file):
+    def __init__(self, ground_truth_vector_file, csvFile=False):
 
         ## Load Ground Truth : Ground Truth should be in geojson or shape file
-        try:
-            self.ground_truth_GDF = gpd.read_file(ground_truth_vector_file)
-        except CPLE_OpenFailedError:  # handles empty geojson
-            self.ground_truth_GDF = gpd.GeoDataFrame({'sindex': [],
-                                                      'condition': [],
-                                                      'geometry': []})
+
+        self.load_truth(ground_truth_vector_file,truthCSV=csvFile)
+
+
         # force calculation of spatialindex
         self.ground_truth_sindex = self.ground_truth_GDF.sindex
 
@@ -168,6 +166,28 @@ class eval_base():
             self.proposal_GDF = gpd.GeoDataFrame(geometry=[])
 
         return 0
+
+    def load_truth(self, ground_truth_vector_file, truthCSV=False):
+
+        if truthCSV:
+            truth_data = pd.read_csv(ground_truth_vector_file)
+            self.ground_truth_GDF = gpd.GeoDataFrame(truth_data,
+                                                 geometry=[shapely.wkt.loads(pred_row['coords_geo']) for idx, pred_row
+                                                           in
+                                                           truth_data.iterrows()])
+        else:
+            try:
+                self.ground_truth_GDF = gpd.read_file(ground_truth_vector_file)
+            except CPLE_OpenFailedError:  # handles empty geojson
+                self.ground_truth_GDF = gpd.GeoDataFrame({'sindex': [],
+                                                          'condition': [],
+                                                          'geometry': []})
+
+        self.ground_truth_sindex = self.ground_truth_sindex
+        self.ground_truth_GDF_Edit = self.ground_truth_GDF.copy(deep=True)
+
+
+
 
     def eval(self, type='iou'):
 
