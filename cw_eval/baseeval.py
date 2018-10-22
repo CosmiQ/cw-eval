@@ -18,7 +18,8 @@ class eval_base():
             self.ground_truth_GDF = gpd.read_file(ground_truth_vector_file)
         except CPLE_OpenFailedError:  # handles empty geojson
             self.ground_truth_GDF = gpd.GeoDataFrame({'sindex': [],
-                                                      'condition': []})
+                                                      'condition': [],
+                                                      'geometry': []})
         # force calculation of spatialindex
         self.ground_truth_sindex = self.ground_truth_GDF.sindex
 
