@@ -50,7 +50,7 @@ class eval_base():
 
 
 
-        for imageID in imageIDList:
+        for imageID in tqdm(imageIDList):
 
 
             self.ground_truth_GDF_Edit = self.ground_truth_GDF[self.ground_truth_GDF[imageIDField] == imageID].copy(deep=True)
@@ -61,7 +61,7 @@ class eval_base():
             if debug:
                 print(iou_field)
 
-            for idx, pred_row in tqdm(proposal_GDF_copy.iterrows()):
+            for idx, pred_row in proposal_GDF_copy.iterrows():
                 #print(pred_row)
                 #print(iou_field)
                 if debug:
