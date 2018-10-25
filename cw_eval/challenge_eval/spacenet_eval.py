@@ -36,7 +36,7 @@ def main():
     if args.output_file:
         print("Writing summary results to {}".format(args.output_file))
         results_DF.to_csv(args.output_file, index=False)
-        print("Writing full results to {}".format(args.output_file+".full"))
-        results_DF_Full.to_csv(args.output_file+".full", index=False)
+        print("Writing full results to {}".format(args.output_file+".full.csv"))
+        results_DF_Full.to_csv(args.output_file+".full.csv", index=False)
 
 
