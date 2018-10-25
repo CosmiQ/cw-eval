@@ -62,21 +62,24 @@ Hints:
 * Use the [metric implementation code](https://github.com/SpaceNetChallenge/utilities/blob/master/python/evaluateScene.py) to self evaluate.
 To run the metric you can use the following command.
 ```
-python python/evaluateScene.py /path/to/SpaceNetTruthFile.csv \
-                               /path/to/SpaceNetProposalFile.csv \
-                               --resultsOutputFile /path/to/SpaceNetResults.csv
+spacenet_eval --help
+
+spacenet_eval --proposalcsv /Users/dlindenbaum/Downloads/TestCases_SpaceNet4/AOI_6_Atlanta_Test_v3_prop_1extra.csv \
+              --truthcsv /Users/dlindenbaum/Downloads/TestCases_SpaceNet4/AOI_6_Atlanta_Test_v3.csv \
+              --challenge off-nadir \
+              --output_file test.csv
 ```
 
 
 ## Use our Docker Container
-We have created two Docker files at /docker/standalone/cpu and /docker/standalone/gpu
-These Dockerfiles will build a docker container with all packages neccessary to run the package
+```
+docker pull cosmiqworks/cw-eval
 
-More documenation to follow
+```
 
 
 ## Dependencies
-All dependencies can be found in the docker file [Dockerfile](./docker/standalone/gpu/Dockerfile)
+All dependencies can be found in the docker file [Dockerfile](./Dockerfile)
 
 ## License
 See [LICENSE](./LICENSE).
