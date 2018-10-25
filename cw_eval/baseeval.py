@@ -37,7 +37,7 @@ class eval_base():
                               ):
 
 
-        # Ge List of all ImageIDs
+        # Get List of all ImageIDs
         imageIDList = []
         imageIDList.extend(list(self.ground_truth_GDF[imageIDField].unique()))
         if not self.proposal_GDF.empty:
@@ -58,6 +58,7 @@ class eval_base():
 
             proposal_GDF_copy = self.proposal_GDF[self.proposal_GDF[imageIDField] == imageID].copy(deep=True)
             proposal_GDF_copy = proposal_GDF_copy[proposal_GDF_copy.area > minArea]
+
             if debug:
                 print(iou_field)
 

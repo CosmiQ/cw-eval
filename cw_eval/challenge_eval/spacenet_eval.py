@@ -5,6 +5,9 @@ supported_challenges = ['off-nadir']#, 'spaceNet-buildings2', 'spaceNet-building
 
 
 
+
+
+
 def main():
     parser = argparse.ArgumentParser(description='Evaluate SpaceNet Competition CSVs')
     parser.add_argument('--proposalcsv', type=str,
@@ -27,7 +30,12 @@ def main():
     prop_file = args.proposalcsv
 
     if args.challenge.lower() == 'off-nadir':
-        results_DF, results_DF_Full = off_nadir_dataset.eval_off_nadir(prop_csv=prop_file, truth_csv=truth_file)
+
+        evalSettings = {'miniou': 0.5,
+                        'minArea': 20}
+
+
+        results_DF, results_DF_Full = off_nadir_dataset.eval_off_nadir(prop_csv=prop_file, truth_csv=truth_file, **evalSettings)
 
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):
         print(results_DF)

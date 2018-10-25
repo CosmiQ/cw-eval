@@ -6,7 +6,7 @@ from cw_eval import baseeval as bF
 
 
 
-def eval_off_nadir(prop_csv, truth_csv, imageColumns=[]):
+def eval_off_nadir(prop_csv, truth_csv, imageColumns=[], miniou=0.5, minArea=20):
 
 
     evalObject = bF.eval_base(ground_truth_vector_file=truth_csv, csvFile=True)
@@ -15,9 +15,10 @@ def eval_off_nadir(prop_csv, truth_csv, imageColumns=[]):
                              proposalCSV=True
                              )
 
-    results = evalObject.eval_iou_spacenet_csv(miniou=0.5,
+    results = evalObject.eval_iou_spacenet_csv(miniou=miniou,
                                                iou_field_prefix="iou_score",
                                                imageIDField="ImageId",
+                                               minArea=minArea
                                                )
 
     results_DF_Full = pd.DataFrame(results)
