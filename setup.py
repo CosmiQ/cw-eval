@@ -37,4 +37,8 @@ setup(name='cw_eval',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       zip_safe=False,
       install_requires=inst_reqs,
-      extras_require=extra_reqs)
+      extras_require=extra_reqs,
+      entry_points = {
+          'console_scripts': ['spacenet_eval=cw_eval.challenge_eval.spacenet_eval:main']
+      }
+      )
