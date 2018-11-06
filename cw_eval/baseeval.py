@@ -4,7 +4,7 @@ import pandas as pd
 from tqdm import tqdm
 import os
 from cw_eval import evalfunctions as eF
-from fiona._err import CPLE_OpenFailedError
+from fiona.errors import DriverError
 
 
 
@@ -16,7 +16,7 @@ class eval_base():
         ## Load Ground Truth : Ground Truth should be in geojson or shape file
         try:
             self.ground_truth_GDF = gpd.read_file(ground_truth_vector_file)
-        except CPLE_OpenFailedError:  # handles empty geojson
+        except DriverError:  # handles empty geojson
             self.ground_truth_GDF = gpd.GeoDataFrame({'sindex': [],
                                                       'condition': [],
                                                       'geometry': []})
