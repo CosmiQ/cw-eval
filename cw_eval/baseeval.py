@@ -277,7 +277,7 @@ class eval_base():
 
 
             else:
-                self.proposal_GDF = gpd.read_file(proposal_vector_file)
+                self.proposal_GDF = gpd.read_file(proposal_vector_file).dropna() 
 
             if conf_field_list:
                 self.proposal_GDF['__total_conf'] = self.proposal_GDF[conf_field_list].max(axis=1)
