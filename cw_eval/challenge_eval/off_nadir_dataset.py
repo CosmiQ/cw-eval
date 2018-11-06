@@ -1,0 +1,93 @@
+## Note, for mac osx compatability import something from shapely.geometry before importing fiona or geopandas
+## https://github.com/Toblerity/Shapely/issues/553  * Import shapely before rasterio or fioana
+from shapely import geometry
+import pandas as pd
+from cw_eval import baseeval as bF
+
+
+
+def eval_off_nadir(prop_csv, truth_csv, imageColumns=[], miniou=0.5, minArea=20):
+
+
+    evalObject = bF.eval_base(ground_truth_vector_file=truth_csv, csvFile=True)
+    evalObject.load_proposal(prop_csv,
+                             conf_field_list=['Confidence'],
+                             proposalCSV=True
+                             )
+
+    results = evalObject.eval_iou_spacenet_csv(miniou=miniou,
+                                               iou_field_prefix="iou_score",
+                                               imageIDField="ImageId",
+                                               minArea=minArea
+                                               )
+
+    results_DF_Full = pd.DataFrame(results)
+
+    if imageColumns:
+        pass
+
+    else:
+        imageColumns = {
+            'Atlanta_nadir7_catid_1030010003D22F00': "Nadir",
+            'Atlanta_nadir8_catid_10300100023BC100': "Nadir",
+            'Atlanta_nadir10_catid_1030010003993E00': "Nadir",
+            'Atlanta_nadir10_catid_1030010003CAF100': "Nadir",
+            'Atlanta_nadir13_catid_1030010002B7D800': "Nadir",
+            'Atlanta_nadir14_catid_10300100039AB000': "Nadir",
+            'Atlanta_nadir16_catid_1030010002649200': "Nadir",
+            'Atlanta_nadir19_catid_1030010003C92000': "Nadir",
+            'Atlanta_nadir21_catid_1030010003127500': "Nadir",
+            'Atlanta_nadir23_catid_103001000352C200': "Nadir",
+            'Atlanta_nadir25_catid_103001000307D800': "Nadir",
+            'Atlanta_nadir27_catid_1030010003472200': "Off-Nadir",
+            'Atlanta_nadir29_catid_1030010003315300': "Off-Nadir",
+            'Atlanta_nadir30_catid_10300100036D5200': "Off-Nadir",
+            'Atlanta_nadir32_catid_103001000392F600': "Off-Nadir",
+            'Atlanta_nadir34_catid_1030010003697400': "Off-Nadir",
+            'Atlanta_nadir36_catid_1030010003895500': "Off-Nadir",
+            'Atlanta_nadir39_catid_1030010003832800': "Off-Nadir",
+            'Atlanta_nadir42_catid_10300100035D1B00': "Very-Off-Nadir",
+            'Atlanta_nadir44_catid_1030010003CCD700': "Very-Off-Nadir",
+            'Atlanta_nadir46_catid_1030010003713C00': "Very-Off-Nadir",
+            'Atlanta_nadir47_catid_10300100033C5200': "Very-Off-Nadir",
+            'Atlanta_nadir49_catid_1030010003492700': "Very-Off-Nadir",
+            'Atlanta_nadir50_catid_10300100039E6200': "Very-Off-Nadir",
+            'Atlanta_nadir52_catid_1030010003BDDC00': "Very-Off-Nadir",
+            'Atlanta_nadir53_catid_1030010003193D00': "Very-Off-Nadir",
+            'Atlanta_nadir53_catid_1030010003CD4300': "Very-Off-Nadir",
+        }
+
+    results_DF_Full['nadir-category'] = [imageColumns[imageID.rsplit('_', 2)[0]] for imageID in results_DF_Full['imageID'].values]
+
+    results_DF = results_DF_Full.groupby(['nadir-category']).sum()
+
+    # Recalculate Values after Summation of AOIs
+    for indexVal in results_DF.index:
+        rowValue = results_DF[results_DF.index == indexVal]
+        # Precision = TruePos / float(TruePos + FalsePos)
+        if float(rowValue['TruePos'] + rowValue['FalsePos']) > 0:
+            Precision = float(rowValue['TruePos'] / float(rowValue['TruePos'] + rowValue['FalsePos']))
+        else:
+            Precision = 0
+        # Recall    = TruePos / float(TruePos + FalseNeg)
+        if float(rowValue['TruePos'] + rowValue['FalseNeg']) > 0:
+            Recall = float(rowValue['TruePos'] / float(rowValue['TruePos'] + rowValue['FalseNeg']))
+        else:
+            Recall = 0
+
+        if Recall * Precision > 0:
+            F1Score = 2 * Precision * Recall / (Precision + Recall)
+        else:
+            F1Score = 0
+
+        results_DF.loc[results_DF.index == indexVal, 'Precision'] = Precision
+        results_DF.loc[results_DF.index == indexVal, 'Recall'] = Recall
+        results_DF.loc[results_DF.index == indexVal, 'F1Score'] = F1Score
+
+
+    return results_DF, results_DF_Full
+
+
+
+
+
