@@ -4,6 +4,7 @@ import pandas as pd
 from tqdm import tqdm
 import os
 from cw_eval import evalfunctions as eF
+from fiona.errors import DriverError
 from fiona._err import CPLE_OpenFailedError
 
 
@@ -14,11 +15,13 @@ class eval_base():
     def __init__(self, ground_truth_vector_file, csvFile=False, truth_geo_value='PolygonWKT_Pix'):
 
         ## Load Ground Truth : Ground Truth should be in geojson or shape file
-
-        self.load_truth(ground_truth_vector_file,truthCSV=csvFile, truth_geo_value=truth_geo_value)
-
-
-
+        try:
+            self.ground_truth_GDF = gpd.read_file(ground_truth_vector_file)
+        except CPLE_OpenFailedError:  # handles empty geojson
+            self.ground_truth_GDF = gpd.GeoDataFrame({'sindex': [],
+                                                      'condition': [],
+                                                      'geometry': []})
+        # force calculation of spatialindex
         self.ground_truth_sindex = self.ground_truth_GDF.sindex
 
         ## create deep copy of ground truth file for calculations
@@ -274,7 +277,7 @@ class eval_base():
 
 
             else:
-                self.proposal_GDF = gpd.read_file(proposal_vector_file)
+                self.proposal_GDF = gpd.read_file(proposal_vector_file).dropna() 
 
             if conf_field_list:
                 self.proposal_GDF['__total_conf'] = self.proposal_GDF[conf_field_list].max(axis=1)
