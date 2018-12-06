@@ -1,15 +1,22 @@
-Welcome to cw-eval's documentation!
-===================================
+CosmiQ Works Evaluation (cw-eval) Documentation
+===============================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
+Core functionality
+==================
 .. automodule:: cw_eval.baseeval
    :members:
 
 .. automodule:: cw_eval.evalfunctions
    :members:
+
+SpaceNet Challenge eval code
+============================
+.. automodule:: cw_eval.challenge_eval.off_nadir_dataset
+   :members:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
 Indices and tables
 ==================

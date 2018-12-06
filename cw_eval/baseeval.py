@@ -9,17 +9,16 @@ from fiona._err import CPLE_OpenFailedError
 
 
 class eval_base():
-    """Object to test IoU for predictions and ground truth polygons."""
+    """Object to test IoU for predictions and ground truth polygons.
+
+    Arguments
+    ---------
+    ground_truth_vector_file : str
+        Path to .geojson file for ground truth.
+
+    """
 
     def __init__(self, ground_truth_vector_file):
-        """Create a new evaluation instance.
-
-        Arguments:
-        ----------
-        ground_truth_vector_file : str
-            Path to .geojson file for ground truth.
-
-        """
         # Load Ground Truth : Ground Truth should be in geojson or shape file
         try:
             self.ground_truth_GDF = gpd.read_file(ground_truth_vector_file)
@@ -36,30 +35,30 @@ class eval_base():
                               imageIDField="ImageId", debug=False, minArea=0):
         """Evaluate IoU between the ground truth and proposals in CSVs.
 
-        Arguments:
-        ----------
-        miniou : ``float``, optional
+        Arguments
+        ---------
+        miniou : float , optional
             Minimum intersection over union score to qualify as a successful
             object detection event. Defaults to ``0.5``.
-        iou_field_prefix : ``str``, optional
+        iou_field_prefix : str , optional
             The name of the IoU score column in ``self.proposal_GDF``. Defaults
             to ``"iou_score"``.
-        imageIDField : ``str``, optional
+        imageIDField : str , optional
             The name of the column corresponding to the image IDs in the
-            ground truth data. Defaults to ``"ImageId"``.
-        debug : ``bool``, optional
+            ground truth data. Defaults to ``"ImageId"`` .
+        debug : bool , optional
             Argument for verbose execution during debugging. Defaults to
             ``False`` (silent execution).
-        minArea : ``float`` or ``int``, optional
+        minArea : float  or int , optional
             Minimum area of a ground truth polygon to be considered during
             evaluation. Often set to ``20`` in SpaceNet competitions. Defaults
-            to ``0`` (consider all ground truth polygons).
+            to ``0``  (consider all ground truth polygons).
 
-        Returns:
-        --------
-        scoring_dict_list : ``list``
-            ``list`` of score output ``dict``s for each image in the ground
-            truth and evaluated image datasets. The ``dict``s contain
+        Returns
+        -------
+        scoring_dict_list : list
+            list  of score output dicts for each image in the ground
+            truth and evaluated image datasets. The dicts contain
             the following keys:
 
             ``('imageID', 'iou_field', 'TruePos', 'FalsePos', 'FalseNeg',
@@ -172,32 +171,32 @@ class eval_base():
                  class_list=['all']):
         """Evaluate IoU between the ground truth and proposals.
 
-        Arguments:
-        ----------
-        miniou : ``float``, optional
+        Arguments
+        ---------
+        miniou : float, optional
             Minimum intersection over union score to qualify as a successful
             object detection event. Defaults to ``0.5``.
-        iou_field_prefix : ``str``, optional
+        iou_field_prefix : str, optional
             The name of the IoU score column in ``self.proposal_GDF``. Defaults
             to ``"iou_score"``.
-        ground_truth_class_field : ``str``, optional
+        ground_truth_class_field : str, optional
             The column in ``self.ground_truth_GDF`` that indicates the class of
             each polygon. Required if using ``calculate_class_scores``.
-        calculate_class_scores : ``bool``, optional
+        calculate_class_scores : bool, optional
             Should class-by-class scores be calculated? Defaults to ``True``.
-        class_list : ``list``, optional
+        class_list : list, optional
             List of classes to be scored. Defaults to ``['all']`` (score all
             classes).
 
-        Returns:
-        --------
-        scoring_dict_list : ``list``
-            ``list`` of score output ``dict``s for each image in the ground
-            truth and evaluated image datasets. The ``dict``s contain
-            the following keys:
+        Returns
+        -------
+        scoring_dict_list : list
+            list of score output dicts for each image in the ground
+            truth and evaluated image datasets. The dicts contain
+            the following keys: ::
 
-            ``('class_id', 'iou_field', 'TruePos', 'FalsePos', 'FalseNeg',
-               'Precision', 'Recall', 'F1Score')``
+                ('class_id', 'iou_field', 'TruePos', 'FalsePos', 'FalseNeg',
+                'Precision', 'Recall', 'F1Score')
 
         """
 
@@ -289,30 +288,30 @@ class eval_base():
                       conf_field_mapping=[]):
         """Load in a proposal geojson or CSV.
 
-        Arguments:
-        ----------
-        proposal_vector_file : ``str``
+        Arguments
+        ---------
+        proposal_vector_file : str
             Path to the file containing proposal vector objects. This can be
             a .geojson or a .csv.
-        conf_field_list : ``list``, optional
+        conf_field_list : list, optional
             List of columns corresponding to confidence value(s) in the
             proposal vector file. Defaults to ``['conf']``.
-        proposalCSV : ``bool``, optional
+        proposalCSV : bool, optional
             Is the proposal file a CSV? Defaults to no (``False``), in which
             case it's assumed to be a .geojson.
-        pred_row_geo_value : ``str``, optional
+        pred_row_geo_value : str, optional
             The name of the geometry-containing column in the proposal vector
             file. Defaults to ``'PolygonWKT_Pix'``.
-        conf_field_mapping : ``dict``, optional
+        conf_field_mapping : dict, optional
             ``'__max_conf_class'`` column value:class ID mapping dict for
             multiclass use. Only required in multiclass cases.
 
-        Returns:
-        --------
+        Returns
+        -------
         ``0`` upon successful completion.
 
-        Notes:
-        ------
+        Notes
+        -----
         Loads in a .geojson or .csv-formatted file of proposal polygons for
         comparison to the ground truth and stores it as part of the
         ``eval_base`` instance.
@@ -362,24 +361,24 @@ class eval_base():
                    truth_geo_value='PolygonWKT_Pix'):
         """Load in the ground truth geometry data.
 
-        Arguments:
-        ----------
-        ground_truth_vector_file : ``str``
+        Arguments
+        ---------
+        ground_truth_vector_file : str
             Path to the ground truth vector file. Must be either .geojson or
             .csv format.
-        truthCSV : ``bool``, optional
+        truthCSV : bool, optional
             Is the ground truth a CSV? Defaults to ``False``, in which case
             it's assumed to be a .geojson.
-        truth_geo_value : ``str``, optional
+        truth_geo_value : str, optional
             Column of the ground truth vector file that corresponds to
             geometry.
 
-        Returns:
-        --------
+        Returns
+        -------
         ``0`` if it completes successfully.
 
-        Notes:
-        ------
+        Notes
+        -----
         Loads the ground truth vector data into the ``eval_base`` instance.
 
         """

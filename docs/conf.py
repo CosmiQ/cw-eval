@@ -24,7 +24,7 @@ copyright = '2018, CosmiQ Works'
 author = 'David Lindenbaum and Nick Weir'
 
 # The short X.Y version
-version = ''
+version = '0.2'
 # The full version, including alpha/beta/rc tags
 release = '0.2'
 
@@ -39,7 +39,7 @@ release = '0.2'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.napoleon'
+    'sphinx.ext.napoleon',
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
@@ -83,7 +83,7 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -159,7 +159,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'cw-eval', 'cw-eval Documentation',
-     author, 'cw-eval', 'One line description of project.',
+     author, 'cw-eval',
+     'CosmiQ Works evaluation package for SpaceNet Challenges.',
      'Miscellaneous'),
 ]
 
@@ -187,11 +188,14 @@ epub_exclude_files = ['search.html']
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {"python": ('https://docs.python.org/', None),
-                       "rasterio": ('https://rasterio.readthedocs.io/', None),
-                       "geopandas": ('http://geopandas.org/', None),
-                       "rtree": ('http://toblerity.org/rtree/', None),
-                       "shapely": ('http://shapely.readthedocs.io/', None)}
+intersphinx_mapping = {
+    "python": ('https://docs.python.org/', None),
+    "rasterio": ('https://rasterio.readthedocs.io/en/latest/', None),
+    "pandas": ('http://pandas.pydata.org/pandas-docs/stable/', None),
+    "geopandas": ('http://geopandas.org/', None),
+    "rtree": ('http://toblerity.org/rtree/', None),
+    "shapely": ('https://shapely.readthedocs.io/en/stable/', None)
+    }
 
 # -- Options for todo extension ----------------------------------------------
 

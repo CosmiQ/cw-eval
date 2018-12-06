@@ -4,15 +4,15 @@ import geopandas as gpd
 def calculate_iou(pred_poly, test_data_GDF):
     """Get the best intersection over union for a predicted polygon.
 
-    Arguments:
-    ----------
-    pred_poly : :py:class:`shapely.geometry.Polygon`
+    Arguments
+    ---------
+    pred_poly : :py:class:`shapely.Polygon`
         Prediction polygon to test.
     test_data_GDF : :py:class:`geopandas.GeoDataFrame`
         GeoDataFrame of ground truth polygons to test ``pred_poly`` against.
 
-    Returns:
-    --------
+    Returns
+    -------
     iou_GDF : :py:class:`geopandas.GeoDataFrame`
         A subset of ``test_data_GDF`` that overlaps ``pred_poly`` with an added
         column ``iou_score`` which indicates the intersection over union value.
@@ -47,17 +47,19 @@ def calculate_iou(pred_poly, test_data_GDF):
 def process_iou(pred_poly, test_data_GDF, remove_matching_element=True):
     """Get the maximum intersection over union score for a predicted polygon.
 
-    Arguments:
-    ----------
+    Arguments
+    ---------
     pred_poly : :py:class:`shapely.geometry.Polygon`
         Prediction polygon to test.
     test_data_GDF : :py:class:`geopandas.GeoDataFrame`
         GeoDataFrame of ground truth polygons to test ``pred_poly`` against.
     remove_matching_element : bool, optional
-        Should the maximum IOU row be dropped from ``test_data_GDF``? Defaults
+        Should the maximum IoU row be dropped from ``test_data_GDF``? Defaults
         to ``True``.
 
-    **NOTE: THIS FUNCTION DOESN'T CURRENTLY RETURN ANYTHING!**
+    Returns
+    -------
+    *This function doesn't currently return anything.*
 
     """
 
