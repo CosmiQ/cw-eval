@@ -1,8 +1,3 @@
-.. cw-eval documentation master file, created by
-   sphinx-quickstart on Tue Dec  4 16:21:45 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to cw-eval's documentation!
 ===================================
 
@@ -10,7 +5,11 @@ Welcome to cw-eval's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+.. automodule:: cw_eval.baseeval
+   :members:
 
+.. automodule:: cw_eval.evalfunctions
+   :members:
 
 Indices and tables
 ==================
