@@ -1,19 +1,11 @@
 from setuptools import setup, find_packages
 
-with open('cw_eval/__init__.py') as f:
-    for line in f:
-        if line.find("__version__") >= 0:
-            version = line.split("=")[1].strip()
-            version = version.strip('"')
-            version = version.strip("'")
-            continue
-
+version = '0.3'
 
 readme = ''
 
 # Runtime requirements.
 inst_reqs = ["shapely", "rtree", "tqdm", "geopandas", "pandas"]
-
 
 extra_reqs = {
     'test': ['mock', 'pytest', 'pytest-cov', 'codecov']}
@@ -30,10 +22,10 @@ setup(name='cw_eval',
           'Programming Language :: Python :: 2.7',
           'Topic :: Scientific/Engineering :: GIS'],
       keywords='spacenet machinelearning iou aws',
-      author=u"David Lindenbaum",
+      author=u"David Lindenbaum and Nicholas Weir",
       author_email='dlindenbaum@iqt.org',
       url='https://github.com/CosmiQ/cw_eval',
-      license='BSD',
+      license='Apache-2.0',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       zip_safe=False,
       install_requires=inst_reqs,
