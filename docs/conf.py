@@ -22,11 +22,12 @@ sys.path.insert(0, os.path.abspath('..'))
 project = 'cw-eval'
 copyright = '2018, CosmiQ Works'
 author = 'David Lindenbaum and Nick Weir'
+license = 'Apache 2.0'
 
 # The short X.Y version
-version = '0.2'
+version = '0.3'
 # The full version, including alpha/beta/rc tags
-release = '0.2'
+release = '0.3'
 
 
 # -- General configuration ---------------------------------------------------
