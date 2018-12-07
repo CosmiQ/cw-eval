@@ -1,53 +1,56 @@
-# CosmiQ-Works-Eval Tools
+<h1 align="center">CosmiQ-Works-Eval Tools</h1>
+<p align="center">
+<a href="https://www.cosmiqworks.org"><img src="http://www.cosmiqworks.org/wp-content/uploads/2016/02/cropped-CosmiQ-Works-Logo_R_RGB.png" width="350" alt="CosmiQ Works">
+<br>
+<br>
+<img align="center" src="https://readthedocs.org/projects/pip/badge/" alt="docs">
+<img align="center" src="https://img.shields.io/github/license/cosmiq/cw-eval.svg" alt="license">
+<img align="center" src="https://img.shields.io/docker/build/cosmiqworks/cw-eval.svg" alt="docker">
+</p>
 
-This package is purpose built to support evaluation of Machine Learning DataSets in GeoSpatial settings.  The geoTools packages is intended to assist in the preprocessing of [SpaceNet](https://spacenetchallenge.github.io/) satellite imagery data corpus hosted on [SpaceNet on AWS](https://aws.amazon.com/public-datasets/spacenet/) to a format that is consumable by machine learning algorithms. 
+- [Download Instructions](#download-instructions)
+- [Installation Instructions](#installation-instructions)
+- [API Documentation](https://cw-eval.readthedocs.io/)
+- [Dependencies](#dependencies)
+- [License](#license)
+---
+This package is purpose built to support evaluation of Machine Learning DataSets in GeoSpatial settings.  The geoTools packages is intended to assist in the preprocessing of [SpaceNet](https://spacenetchallenge.github.io/) satellite imagery data corpus hosted on [SpaceNet on AWS](https://aws.amazon.com/public-datasets/spacenet/) to a format that is consumable by machine learning algorithms.
 The evalTools package is used to evaluate the effectiveness of object detection algorithms using ground truth.
 The labelTools package assists in transfering geoJson labels into common label schemes for machine learning frameworks
-This is version 3.0 and has been updated with more capabilities to allow for computer vision applications using remote sensing data
+This is version 0.3 and has been updated with more capabilities to allow for computer vision applications using remote sensing data.
 
 ## Download Instructions
 Further download instructions for the [SpaceNet Dataset](https://github.com/SpaceNetChallenge/utilities/tree/master/content/download_instructions) can be found [here](https://github.com/SpaceNetChallenge/utilities/tree/master/content/download_instructions)
-
 
 
 ## Installation Instructions
 Several packages require binaries to be installed before pip installing the other packages.  Conda is a simple way to install everything and their dependencies
 
 Rtree is required as a dependency  
-* Install [Rtree](http://toblerity.org/rtree/install.html) 
-```commandline 
+* Install [Rtree](http://toblerity.org/rtree/install.html)
+```
 conda install -c conda-forge rtree
 ```
 
-* Pip Install from github 
-```commandline
-    git clone https://github.com/CosmiQ/cw-eval.git
-    cd cw-eval
-    pip install -e .
-    
+* Pip Install from github
+```
+git clone https://github.com/CosmiQ/cw-eval.git
+cd cw-eval
+pip install -e .
 ```
 
-or 
-```commandline
-    pip install --upgrade git+https://github.com/CosmiQ/cw-eval.git
+OR
+```
+pip install --upgrade git+https://github.com/CosmiQ/cw-eval.git
 ```
 
-## To run the metric you can use the following command.
-```
-spacenet_eval --help
-
-spacenet_eval --proposalcsv ./TestCases_SpaceNet4/AOI_6_Atlanta_Test_v3_prop_1extra.csv \
-              --truthcsv ./TestCases_SpaceNet4/AOI_6_Atlanta_Test_v3.csv \
-              --challenge off-nadir \
-              --output_file test.csv
-```
-
-
-## Use our Docker Container
+OR use our docker container:
 ```
 docker pull cosmiqworks/cw-eval
-
 ```
+
+## API Documentation
+See the [readthedocs](https://cw-eval.readthedocs.io/) page.
 
 
 ## Evaluation Metric
@@ -75,26 +78,20 @@ Hints:
 * The images provided could contain anywhere from zero to multiple buildings.
 * All proposed polygons should be legitimate (they should have an area, they should have points that at least make a triangle instead of a point or a line, etc).
 * Use the [metric implementation code](https://github.com/SpaceNetChallenge/utilities/blob/master/python/evaluateScene.py) to self evaluate.
-To run the metric you can use the following command.
+To run the metric you can use the following command:
+
 ```
 spacenet_eval --help
 
-spacenet_eval --proposalcsv /Users/dlindenbaum/Downloads/TestCases_SpaceNet4/AOI_6_Atlanta_Test_v3_prop_1extra.csv \
-              --truthcsv /Users/dlindenbaum/Downloads/TestCases_SpaceNet4/AOI_6_Atlanta_Test_v3.csv \
+spacenet_eval --proposalcsv ./TestCases_SpaceNet4/AOI_6_Atlanta_Test_v3_prop_1extra.csv \
+              --truthcsv ./TestCases_SpaceNet4/AOI_6_Atlanta_Test_v3.csv \
               --challenge off-nadir \
               --output_file test.csv
 ```
 
-
-## Use our Docker Container
-```
-docker pull cosmiqworks/cw-eval
-
-```
-
-
 ## Dependencies
-All dependencies can be found in the docker file [Dockerfile](./Dockerfile)
+All dependencies can be found in the docker file [Dockerfile](./Dockerfile) or
+[environment.yml](./environment.yml)
 
 ## License
-See [LICENSE](./LICENSE).
+See [LICENSE](./LICENSE.txt).
