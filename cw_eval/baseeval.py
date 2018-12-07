@@ -42,10 +42,10 @@ class EvalBase():
             object detection event. Defaults to ``0.5``.
         iou_field_prefix : str , optional
             The name of the IoU score column in ``self.proposal_GDF``. Defaults
-            to ``"iou_score"``.
+            to ``"iou_score"`` .
         imageIDField : str , optional
             The name of the column corresponding to the image IDs in the
-            ground truth data. Defaults to ``"ImageId"`` .
+            ground truth data. Defaults to ``"ImageId"``.
         debug : bool , optional
             Argument for verbose execution during debugging. Defaults to
             ``False`` (silent execution).
@@ -59,10 +59,10 @@ class EvalBase():
         scoring_dict_list : list
             list  of score output dicts for each image in the ground
             truth and evaluated image datasets. The dicts contain
-            the following keys:
+            the following keys: ::
 
-            ``('imageID', 'iou_field', 'TruePos', 'FalsePos', 'FalseNeg',
-               'Precision', 'Recall', 'F1Score')``
+                ('imageID', 'iou_field', 'TruePos', 'FalsePos', 'FalseNeg',
+                'Precision', 'Recall', 'F1Score')
 
         """
 
@@ -405,6 +405,9 @@ class EvalBase():
 
 def eval_base(ground_truth_vector_file, csvFile=False,
               truth_geo_value='PolygonWKT_Pix'):
-    """Deprecated API to EvalBase."""
+    """Deprecated API to EvalBase.
+
+    .. deprecated:: 0.3
+        Use :class:`EvalBase` instead."""
 
     return EvalBase(ground_truth_vector_file)
