@@ -8,7 +8,7 @@ from fiona.errors import DriverError
 from fiona._err import CPLE_OpenFailedError
 
 
-class eval_base():
+class EvalBase():
     """Object to test IoU for predictions and ground truth polygons.
 
     Arguments
@@ -163,9 +163,6 @@ class eval_base():
 
         return scoring_dict_list
 
-
-
-
     def eval_iou(self, miniou=0.5, iou_field_prefix='iou_score',
                  ground_truth_class_field='', calculate_class_scores=True,
                  class_list=['all']):
@@ -314,7 +311,7 @@ class eval_base():
         -----
         Loads in a .geojson or .csv-formatted file of proposal polygons for
         comparison to the ground truth and stores it as part of the
-        ``eval_base`` instance.
+        ``EvalBase`` instance.
 
         """
 
@@ -379,7 +376,7 @@ class eval_base():
 
         Notes
         -----
-        Loads the ground truth vector data into the ``eval_base`` instance.
+        Loads the ground truth vector data into the ``EvalBase`` instance.
 
         """
         if truthCSV:
@@ -404,3 +401,10 @@ class eval_base():
 
     def eval(self, type='iou'):
         pass
+
+
+def eval_base(ground_truth_vector_file, csvFile=False,
+              truth_geo_value='PolygonWKT_Pix'):
+    """Deprecated API to EvalBase."""
+
+    return EvalBase(ground_truth_vector_file)

@@ -1,5 +1,8 @@
 CosmiQ Works Evaluation (cw-eval) Documentation
 ===============================================
+:Author: CosmiQ Works, <www.cosmiqworks.org>
+:Version: |version|
+:Copyright: 2018, CosmiQ Works
 
 Core functionality
 ==================
