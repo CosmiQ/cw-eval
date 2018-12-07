@@ -6,6 +6,7 @@
 <img align="center" src="https://readthedocs.org/projects/pip/badge/" alt="docs">
 <img align="center" src="https://img.shields.io/github/license/cosmiq/cw-eval.svg" alt="license">
 <img align="center" src="https://img.shields.io/docker/build/cosmiqworks/cw-eval.svg" alt="docker">
+</p>
 - [Download Instructions](#download-instructions)
 - [Installation Instructions](#installation-instructions)
 - [API Documentation](https://cw-eval.readthedocs.io/)
