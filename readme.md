@@ -1,17 +1,16 @@
-# CosmiQ-Works-Eval Tools
+<h1 align="center">CosmiQ-Works-Eval Tools</h1>
+<p align="center">
 <a href="https://www.cosmiqworks.org"><img src="http://www.cosmiqworks.org/wp-content/uploads/2016/02/cropped-CosmiQ-Works-Logo_R_RGB.png" width="350" alt="CosmiQ Works">
-
-
-![docs](https://readthedocs.org/projects/pip/badge/
-)
-![license](https://img.shields.io/github/license/cosmiq/cw-eval.svg)
-![docker](https://img.shields.io/docker/build/cosmiqworks/cw-eval.svg)
+<br>
+<br>
+<img align="center" src="https://readthedocs.org/projects/pip/badge/" alt="docs">
+<img align="center" src="https://img.shields.io/github/license/cosmiq/cw-eval.svg" alt="license">
+<img align="center" src="https://img.shields.io/docker/build/cosmiqworks/cw-eval.svg" alt="docker">
 - [Download Instructions](#download-instructions)
 - [Installation Instructions](#installation-instructions)
 - [API Documentation](https://cw-eval.readthedocs.io/)
 - [Dependencies](#dependencies)
 - [License](#license)
-
 This package is purpose built to support evaluation of Machine Learning DataSets in GeoSpatial settings.  The geoTools packages is intended to assist in the preprocessing of [SpaceNet](https://spacenetchallenge.github.io/) satellite imagery data corpus hosted on [SpaceNet on AWS](https://aws.amazon.com/public-datasets/spacenet/) to a format that is consumable by machine learning algorithms.
 The evalTools package is used to evaluate the effectiveness of object detection algorithms using ground truth.
 The labelTools package assists in transfering geoJson labels into common label schemes for machine learning frameworks
