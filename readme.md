@@ -1,8 +1,10 @@
-<h1 align="center">CosmiQ-Works-Eval Tools</h1>
+<h1 align="center">CosmiQ Works Evaluation Tools</h1>
 <p align="center">
 <a href="http://www.cosmiqworks.org"><img src="http://www.cosmiqworks.org/wp-content/uploads/2016/02/cropped-CosmiQ-Works-Logo_R_RGB.png" width="350" alt="CosmiQ Works">
 <br>
 <br>
+<img align="center" src="https://img.shields.io/pypi/pyversions/cw-eval.svg">
+<img align="center" src="https://img.shields.io/conda/vn/conda-forge/cw-eval.svg">
 <img align="center" src="https://readthedocs.org/projects/pip/badge/" alt="docs">
 <img align="center" src="https://img.shields.io/github/license/cosmiq/cw-eval.svg" alt="license">
 <img align="center" src="https://img.shields.io/docker/build/cosmiqworks/cw-eval.svg" alt="docker">
@@ -14,37 +16,40 @@
 - [Dependencies](#dependencies)
 - [License](#license)
 ---
-This package is purpose built to support evaluation of Machine Learning DataSets in GeoSpatial settings.  The geoTools packages is intended to assist in the preprocessing of [SpaceNet](https://spacenetchallenge.github.io/) satellite imagery data corpus hosted on [SpaceNet on AWS](https://aws.amazon.com/public-datasets/spacenet/) to a format that is consumable by machine learning algorithms.
-The evalTools package is used to evaluate the effectiveness of object detection algorithms using ground truth.
-The labelTools package assists in transfering geoJson labels into common label schemes for machine learning frameworks
-This is version 0.3 and has been updated with more capabilities to allow for computer vision applications using remote sensing data.
+This package is purpose-built to support evaluation of computer vision models for geospatial imagery. The functionality contained here is used in evaluation of the SpaceNet Challenges.
 
 ## Download Instructions
 Further download instructions for the [SpaceNet Dataset](https://github.com/SpaceNetChallenge/utilities/tree/master/content/download_instructions) can be found [here](https://github.com/SpaceNetChallenge/utilities/tree/master/content/download_instructions)
 
 
 ## Installation Instructions
-Several packages require binaries to be installed before pip installing the other packages.  Conda is a simple way to install everything and their dependencies
+Several packages require binaries to be installed before pip installing the other packages.  Conda is a simple way to install everything and their dependencies:
 
-Rtree is required as a dependency  
-* Install [Rtree](http://toblerity.org/rtree/install.html)
+#### Conda
+```
+conda install -c conda-forge cw-eval
+```
+
+#### pip
+
+You may use `pip` to install this package; however, note that one of the dependencies, [rtree](https://github.com/Toblerity/rtree), can require pre-installation of [libspatialindex](https://libspatialindex.github.io/) binaries. This can all be done by installing rtree using conda:
 ```
 conda install -c conda-forge rtree
 ```
+or by following the instructions for libspatialindex install.
 
-* Pip Install from github
+Once you have dependencies set up, install as usual using `pip`:
 ```
-git clone https://github.com/CosmiQ/cw-eval.git
-cd cw-eval
-pip install -e .
+pip install cw-eval
 ```
-
-OR
+For bleeding-edge versions (use at your own risk), `pip install` from the dev branch of this repository:
 ```
-pip install --upgrade git+https://github.com/CosmiQ/cw-eval.git
+pip install --upgrade git+https://github.com/CosmiQ/cw-eval.git@dev
 ```
 
-OR use our docker container:
+#### Docker
+
+You may also use our Docker container:
 ```
 docker pull cosmiqworks/cw-eval
 ```
