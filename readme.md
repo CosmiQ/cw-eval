@@ -13,10 +13,11 @@
 - [API Documentation](https://cw-eval.readthedocs.io/)
 - [Dependencies](#dependencies)
 - [License](#license)
+---
 This package is purpose built to support evaluation of Machine Learning DataSets in GeoSpatial settings.  The geoTools packages is intended to assist in the preprocessing of [SpaceNet](https://spacenetchallenge.github.io/) satellite imagery data corpus hosted on [SpaceNet on AWS](https://aws.amazon.com/public-datasets/spacenet/) to a format that is consumable by machine learning algorithms.
 The evalTools package is used to evaluate the effectiveness of object detection algorithms using ground truth.
 The labelTools package assists in transfering geoJson labels into common label schemes for machine learning frameworks
-This is version 3.0 and has been updated with more capabilities to allow for computer vision applications using remote sensing data
+This is version 0.3 and has been updated with more capabilities to allow for computer vision applications using remote sensing data.
 
 ## Download Instructions
 Further download instructions for the [SpaceNet Dataset](https://github.com/SpaceNetChallenge/utilities/tree/master/content/download_instructions) can be found [here](https://github.com/SpaceNetChallenge/utilities/tree/master/content/download_instructions)
