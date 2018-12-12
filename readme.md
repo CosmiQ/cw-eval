@@ -10,17 +10,12 @@
 <img align="center" src="https://img.shields.io/docker/build/cosmiqworks/cw-eval.svg" alt="docker">
 </p>
 
-- [Download Instructions](#download-instructions)
 - [Installation Instructions](#installation-instructions)
 - [API Documentation](https://cw-eval.readthedocs.io/)
 - [Dependencies](#dependencies)
 - [License](#license)
 ---
 This package is purpose-built to support evaluation of computer vision models for geospatial imagery. The functionality contained here is used in evaluation of the SpaceNet Challenges.
-
-## Download Instructions
-Further download instructions for the [SpaceNet Dataset](https://github.com/SpaceNetChallenge/utilities/tree/master/content/download_instructions) can be found [here](https://github.com/SpaceNetChallenge/utilities/tree/master/content/download_instructions)
-
 
 ## Installation Instructions
 Several packages require binaries to be installed before pip installing the other packages.  Conda is a simple way to install everything and their dependencies:
