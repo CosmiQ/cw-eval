@@ -1,6 +1,6 @@
 <h1 align="center">CosmiQ Works Evaluation Tools</h1>
 <p align="center">
-<a href="http://www.cosmiqworks.org"><img src="http://www.cosmiqworks.org/wp-content/uploads/2016/02/cropped-CosmiQ-Works-Logo_R_RGB.png" width="350" alt="CosmiQ Works">
+<a href="http://www.cosmiqworks.org"><img src="http://www.cosmiqworks.org/wp-content/uploads/2016/02/cropped-CosmiQ-Works-Logo_R_RGB.png" width="350" alt="CosmiQ Works"></a>
 <br>
 <br>
 <img align="center" src="https://img.shields.io/pypi/pyversions/cw-eval.svg">
