@@ -5,7 +5,7 @@ from cw_eval import data
 from shapely.geometry import Polygon
 
 class TestEvalFuncs(object):
-    def test_overlap():
+    def test_overlap(self):
         gt_gdf = data.gt_gdf()
         pred_poly = Polygon(((736348.0, 3722762.5),
                              (736353.0, 3722762.0),
