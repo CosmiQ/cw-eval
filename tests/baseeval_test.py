@@ -29,4 +29,4 @@ class TestEvalBase(object):
         expected_gdf = gpd.GeoDataFrame({'sindex': [],
                                          'condition': [],
                                          'geometry': []})
-        assert base_instance.ground_truth_GDF == expected_gdf
+        assert base_instance.ground_truth_GDF.equals(expected_gdf)
