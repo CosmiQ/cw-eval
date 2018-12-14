@@ -10,7 +10,6 @@ from fiona.errors import DriverError
 from fiona._err import CPLE_OpenFailedError
 
 
-
 class EvalBase():
     """Object to test IoU for predictions and ground truth polygons.
 
@@ -303,7 +302,8 @@ class EvalBase():
             case it's assumed to be a .geojson.
         pred_row_geo_value : str, optional
             The name of the geometry-containing column in the proposal vector
-            file. Defaults to ``'PolygonWKT_Pix'``.
+            file. Defaults to ``'PolygonWKT_Pix'``. Note: this method assumes
+            the geometry is in WKT format.
         conf_field_mapping : dict, optional
             ``'__max_conf_class'`` column value:class ID mapping dict for
             multiclass use. Only required in multiclass cases.
@@ -316,7 +316,8 @@ class EvalBase():
         -----
         Loads in a .geojson or .csv-formatted file of proposal polygons for
         comparison to the ground truth and stores it as part of the
-        ``EvalBase`` instance.
+        ``EvalBase`` instance. This method assumes the geometry contained in
+        the proposal file is in WKT format.
 
         """
 
@@ -336,10 +337,10 @@ class EvalBase():
                 try:
                     self.proposal_GDF = gpd.read_file(
                         proposal_vector_file).dropna()
-                except DriverError or CPLE_OpenFailedError:
+                except (CPLE_OpenFailedError, DriverError):
                     self.proposal_GDF = gpd.GeoDataFrame(geometry=[])
 
-            if conf_field_list:
+            if conf_field_list and conf_field_list in self.proposal_GDF.columns:
                 self.proposal_GDF['__total_conf'] = self.proposal_GDF[
                     conf_field_list].max(axis=1)
                 self.proposal_GDF['__max_conf_class'] = self.proposal_GDF[
