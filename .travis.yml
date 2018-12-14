@@ -22,10 +22,10 @@ install:
   - conda env create -n cw-eval python=$TRAVIS_PYTHON_VERSION --file=environment.yml
   - source activate cw-eval
   - pip install -q -e .
-  - pip install codecov
+  - pip install codecov pytest pytest-cov
 # command to run tests
 script:
-  - pytest
+  - pytest --cov=./
 
 after_success:
   - codecov
