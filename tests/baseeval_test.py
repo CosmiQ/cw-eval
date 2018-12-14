@@ -31,7 +31,7 @@ class TestEvalBase(object):
                                          'geometry': []})
         assert base_instance.ground_truth_GDF.equals(expected_gdf)
 
-    def test_score_proposal_geojson(self):
+    def test_score_proposals(self):
         """Test reading in a proposal GDF from a geojson and scoring it."""
         eb = EvalBase(os.path.join(cw_eval.data.data_dir, 'gt.geojson'))
         eb.load_proposal(os.path.join(cw_eval.data.data_dir, 'pred.geojson'))
