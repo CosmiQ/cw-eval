@@ -1,5 +1,3 @@
-import geopandas as gpd
-import pytest
 from cw_eval.evalfunctions import calculate_iou, process_iou
 from cw_eval import data
 from shapely.geometry import Polygon

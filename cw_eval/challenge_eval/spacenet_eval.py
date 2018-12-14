@@ -1,5 +1,5 @@
 """Script for executing eval for SpaceNet challenges."""
-
+from __future__ import print_function, with_statement, division
 from cw_eval.challenge_eval import off_nadir_dataset
 import argparse
 import pandas as pd
