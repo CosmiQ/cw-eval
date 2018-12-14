@@ -10,7 +10,6 @@ from fiona.errors import DriverError
 from fiona._err import CPLE_OpenFailedError
 
 
-
 class EvalBase():
     """Object to test IoU for predictions and ground truth polygons.
 
@@ -25,10 +24,12 @@ class EvalBase():
         # Load Ground Truth : Ground Truth should be in geojson or shape file
         try:
             self.ground_truth_GDF = gpd.read_file(ground_truth_vector_file)
-        except CPLE_OpenFailedError or DriverError:  # handles empty geojson
+        except (CPLE_OpenFailedError, DriverError):  # handles empty geojson
             self.ground_truth_GDF = gpd.GeoDataFrame({'sindex': [],
                                                       'condition': [],
                                                       'geometry': []})
+        except AttributeError:  # handles passing gdf instead of path to file
+            self.ground_truth_GDF = ground_truth_vector_file
         self.ground_truth_sindex = self.ground_truth_GDF.sindex  # get sindex
         # create deep copy of ground truth file for calculations
         self.ground_truth_GDF_Edit = self.ground_truth_GDF.copy(deep=True)
@@ -301,7 +302,8 @@ class EvalBase():
             case it's assumed to be a .geojson.
         pred_row_geo_value : str, optional
             The name of the geometry-containing column in the proposal vector
-            file. Defaults to ``'PolygonWKT_Pix'``.
+            file. Defaults to ``'PolygonWKT_Pix'``. Note: this method assumes
+            the geometry is in WKT format.
         conf_field_mapping : dict, optional
             ``'__max_conf_class'`` column value:class ID mapping dict for
             multiclass use. Only required in multiclass cases.
@@ -314,7 +316,8 @@ class EvalBase():
         -----
         Loads in a .geojson or .csv-formatted file of proposal polygons for
         comparison to the ground truth and stores it as part of the
-        ``EvalBase`` instance.
+        ``EvalBase`` instance. This method assumes the geometry contained in
+        the proposal file is in WKT format.
 
         """
 
@@ -334,7 +337,7 @@ class EvalBase():
                 try:
                     self.proposal_GDF = gpd.read_file(
                         proposal_vector_file).dropna()
-                except DriverError or CPLE_OpenFailedError:
+                except (CPLE_OpenFailedError, DriverError):
                     self.proposal_GDF = gpd.GeoDataFrame(geometry=[])
 
             if conf_field_list:
