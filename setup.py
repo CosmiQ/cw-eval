@@ -28,6 +28,7 @@ setup(name='cw_eval',
       license='Apache-2.0',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       zip_safe=False,
+      include_package_data=True,
       install_requires=inst_reqs,
       extras_require=extra_reqs,
       entry_points = {
