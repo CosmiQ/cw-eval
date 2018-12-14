@@ -5,7 +5,7 @@ import geopandas as gpd
 
 
 class TestEvalBase(object):
-    def test_init_from_file():
+    def test_init_from_file(self):
         """Test instantiation of an EvalBase instance from a file."""
         base_instance = EvalBase(os.path.join(cw_eval.data.data_dir,
                                               'gt.geojson'))
@@ -14,7 +14,7 @@ class TestEvalBase(object):
         assert base_instance.proposal_GDF.equals(gpd.GeoDataFrame([]))
         assert base_instance.ground_truth_GDF.equals(base_instance.ground_truth_GDF_Edit)
 
-    def test_init_from_gdf():
+    def test_init_from_gdf(self):
         """Test instantiation of an EvalBase from a pre-loaded GeoDataFrame."""
         gdf = cw_eval.data.gt_gdf()
         base_instance = EvalBase(gdf)
@@ -22,7 +22,7 @@ class TestEvalBase(object):
         assert base_instance.proposal_GDF.equals(gpd.GeoDataFrame([]))
         assert base_instance.ground_truth_GDF.equals(base_instance.ground_truth_GDF_Edit)
 
-    def test_init_empty_geojson():
+    def test_init_empty_geojson(self):
         """Test instantiation of EvalBase with an empty geojson file."""
         base_instance = EvalBase(os.path.join(cw_eval.data.data_dir,
                                               'empty.geojson'))
@@ -31,7 +31,7 @@ class TestEvalBase(object):
                                          'geometry': []})
         assert base_instance.ground_truth_GDF.equals(expected_gdf)
 
-    def test_score_proposal_geojson():
+    def test_score_proposal_geojson(self):
         """Test reading in a proposal GDF from a geojson and scoring it."""
         eb = EvalBase(os.path.join(cw_eval.data.data_dir, 'gt.geojson'))
         eb.load_proposal(os.path.join(cw_eval.data.data_dir, 'pred.geojson'))
