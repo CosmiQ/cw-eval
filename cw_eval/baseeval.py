@@ -25,7 +25,7 @@ class EvalBase():
         # Load Ground Truth : Ground Truth should be in geojson or shape file
         try:
             self.ground_truth_GDF = gpd.read_file(ground_truth_vector_file)
-        except CPLE_OpenFailedError or DriverError:  # handles empty geojson
+        except (CPLE_OpenFailedError, DriverError):  # handles empty geojson
             self.ground_truth_GDF = gpd.GeoDataFrame({'sindex': [],
                                                       'condition': [],
                                                       'geometry': []})
