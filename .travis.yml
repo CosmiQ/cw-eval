@@ -21,6 +21,9 @@ install:
   - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
+  # switch python version spec in environment.yml to match TRAVIS_PYTHON_VERSION
+  # annoying workaround to `conda env create python=$TRAVIS_PYTHON_VERSION` not working
+  - sed -i -E 's/(python=)(.*)/\1'$TRAVIS_PYTHON_VERSION'/' ./environment.yml
   - conda env create -n cw-eval python=$TRAVIS_PYTHON_VERSION --file=environment.yml
   - source activate cw-eval
   - python --version
