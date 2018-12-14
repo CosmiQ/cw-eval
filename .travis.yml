@@ -19,9 +19,12 @@ install:
   - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
-  - conda env create -n cw-eval python=$TRAVIS_PYTHON_VERSION --file=environment.yml
+  - conda env create -n cw-eval python=$TRAVIS_PYTHON_VERSION --file=environment.yml codecov
   - source activate cw-eval
   - pip install -q -e .
 # command to run tests
 script:
   - pytest
+
+after_success:
+  - codecov
