@@ -340,7 +340,7 @@ class EvalBase():
                 except (CPLE_OpenFailedError, DriverError):
                     self.proposal_GDF = gpd.GeoDataFrame(geometry=[])
 
-            if conf_field_list and conf_field_list in self.proposal_GDF.columns:
+            if conf_field_list:
                 self.proposal_GDF['__total_conf'] = self.proposal_GDF[
                     conf_field_list].max(axis=1)
                 self.proposal_GDF['__max_conf_class'] = self.proposal_GDF[
