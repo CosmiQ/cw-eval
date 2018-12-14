@@ -1,3 +1,5 @@
+from __future__ import print_function, with_statement, division
+
 import shapely.wkt
 import geopandas as gpd
 import pandas as pd
@@ -6,6 +8,7 @@ import os
 from cw_eval import evalfunctions as eF
 from fiona.errors import DriverError
 from fiona._err import CPLE_OpenFailedError
+
 
 
 class EvalBase():

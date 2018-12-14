@@ -1,5 +1,7 @@
 language: python
+sudo: false
 python:
+  - "2.7"
   - "3.6"
 
 # command to install dependencies
@@ -19,8 +21,12 @@ install:
   - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
-  - conda env create -n cw-eval python=$TRAVIS_PYTHON_VERSION --file=environment.yml
+  # switch python version spec in environment.yml to match TRAVIS_PYTHON_VERSION
+  # annoying workaround to `conda env create python=$TRAVIS_PYTHON_VERSION` not working
+  - sed -i -E 's/(python=)(.*)/\1'$TRAVIS_PYTHON_VERSION'/' ./environment.yml
+  - conda env create -n cw-eval --file=environment.yml
   - source activate cw-eval
+  - python --version
   - pip install -q -e .
   - pip install codecov pytest pytest-cov
 # command to run tests
