@@ -23,11 +23,12 @@ class EvalBase():
     def __init__(self, ground_truth_vector_file):
         # Load Ground Truth : Ground Truth should be in geojson or shape file
         try:
-            self.ground_truth_GDF = gpd.read_file(ground_truth_vector_file)
-        except (CPLE_OpenFailedError, DriverError):  # handles empty geojson
-            self.ground_truth_GDF = gpd.GeoDataFrame({'sindex': [],
-                                                      'condition': [],
-                                                      'geometry': []})
+            if ground_truth_vector_file.lower().endswith('json'):
+                self.ground_truth_GDF = self.load_truth(
+                    ground_truth_vector_file)
+            elif ground_truth_vector_file.lower().endswith('csv'):
+                self.ground_truth_GDF = self.load_truth(
+                    ground_truth_vector_file, truthCSV=True)
         except AttributeError:  # handles passing gdf instead of path to file
             self.ground_truth_GDF = ground_truth_vector_file
         self.ground_truth_sindex = self.ground_truth_GDF.sindex  # get sindex
@@ -378,7 +379,7 @@ class EvalBase():
 
         Returns
         -------
-        ``0`` if it completes successfully.
+        Nothing.
 
         Notes
         -----
@@ -402,8 +403,6 @@ class EvalBase():
         self.ground_truth_sindex = self.ground_truth_GDF.sindex
         # create deep copy of ground truth file for calculations
         self.ground_truth_GDF_Edit = self.ground_truth_GDF.copy(deep=True)
-
-        return 0
 
     def eval(self, type='iou'):
         pass
