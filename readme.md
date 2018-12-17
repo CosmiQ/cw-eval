@@ -96,3 +96,8 @@ All dependencies can be found in the docker file [Dockerfile](./Dockerfile) or
 
 ## License
 See [LICENSE](./LICENSE.txt).
+
+## Traffic
+![GitHub](https://img.shields.io/github/downloads/cosmiq/cw-eval/total.svg)
+![PyPI](https://img.shields.io/pypi/dm/cw-eval.svg)
+![Conda](https://img.shields.io/conda/dn/conda-forge/cw-eval.svg)
