@@ -1,4 +1,4 @@
-CosmiQ Works Evaluation (cw-eval) Documentation
+CosmiQ Works Evaluation (`cw-eval <https://github.com/cosmiq/cw-eval>`__) Documentation
 ===============================================
 :Author: `CosmiQ Works <https://www.cosmiqworks.org>`__
 :Version: |version|
