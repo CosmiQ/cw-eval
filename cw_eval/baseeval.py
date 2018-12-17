@@ -24,11 +24,9 @@ class EvalBase():
         # Load Ground Truth : Ground Truth should be in geojson or shape file
         try:
             if ground_truth_vector_file.lower().endswith('json'):
-                self.ground_truth_GDF = self.load_truth(
-                    ground_truth_vector_file)
+                self.load_truth(ground_truth_vector_file)
             elif ground_truth_vector_file.lower().endswith('csv'):
-                self.ground_truth_GDF = self.load_truth(
-                    ground_truth_vector_file, truthCSV=True)
+                self.load_truth(ground_truth_vector_file, truthCSV=True)
         except AttributeError:  # handles passing gdf instead of path to file
             self.ground_truth_GDF = ground_truth_vector_file
         self.ground_truth_sindex = self.ground_truth_GDF.sindex  # get sindex
@@ -395,7 +393,7 @@ class EvalBase():
         else:
             try:
                 self.ground_truth_GDF = gpd.read_file(ground_truth_vector_file)
-            except CPLE_OpenFailedError or DriverError:  # empty geojson
+            except (CPLE_OpenFailedError, DriverError):  # empty geojson
                 self.ground_truth_GDF = gpd.GeoDataFrame({'sindex': [],
                                                           'condition': [],
                                                           'geometry': []})
