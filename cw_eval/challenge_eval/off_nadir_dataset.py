@@ -1,13 +1,12 @@
 from __future__ import print_function, with_statement, division
 
-from shapely import geometry
 import pandas as pd
 from cw_eval import baseeval as bF
 
 # Note, for mac osx compatability import something from shapely.geometry before
 # importing fiona or geopandas
 # https://github.com/Toblerity/Shapely/issues/553  * Import shapely before
-# rasterio or fioana
+# rasterio or fiona
 
 
 def eval_off_nadir(prop_csv, truth_csv, imageColumns={}, miniou=0.5,
