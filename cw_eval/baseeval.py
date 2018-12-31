@@ -27,12 +27,17 @@ class EvalBase():
                 self.load_truth(ground_truth_vector_file)
             elif ground_truth_vector_file.lower().endswith('csv'):
                 self.load_truth(ground_truth_vector_file, truthCSV=True)
+            self.ground_truth_fname = ground_truth_vector_file
         except AttributeError:  # handles passing gdf instead of path to file
             self.ground_truth_GDF = ground_truth_vector_file
+            self.ground_truth_fname = 'GeoDataFrame variable'
         self.ground_truth_sindex = self.ground_truth_GDF.sindex  # get sindex
         # create deep copy of ground truth file for calculations
         self.ground_truth_GDF_Edit = self.ground_truth_GDF.copy(deep=True)
         self.proposal_GDF = gpd.GeoDataFrame([])  # initialize proposal GDF
+
+    def __repr__(self):
+        return 'EvalBase {}'.format(self.ground_truth_fname)
 
     def eval_iou_spacenet_csv(self, miniou=0.5, iou_field_prefix="iou_score",
                               imageIDField="ImageId", debug=False, minArea=0):
