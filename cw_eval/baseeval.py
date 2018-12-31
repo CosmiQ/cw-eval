@@ -37,7 +37,7 @@ class EvalBase():
         self.proposal_GDF = gpd.GeoDataFrame([])  # initialize proposal GDF
 
     def __repr__(self):
-        return 'EvalBase {}'.format(self.ground_truth_fname)
+        return 'EvalBase {}'.format(os.path.split(self.ground_truth_fname)[-1])
 
     def eval_iou_spacenet_csv(self, miniou=0.5, iou_field_prefix="iou_score",
                               imageIDField="ImageId", debug=False, minArea=0):
@@ -362,7 +362,6 @@ class EvalBase():
                 by='__total_conf', ascending=False)
         else:
             self.proposal_GDF = gpd.GeoDataFrame(geometry=[])
-        return 0
 
     def load_truth(self, ground_truth_vector_file, truthCSV=False,
                    truth_geo_value='PolygonWKT_Pix'):
