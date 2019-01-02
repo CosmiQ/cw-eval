@@ -22,8 +22,8 @@ def main():
                         help='Output file To write results to CSV')
     args = parser.parse_args()
 
-    truth_file = args.truthcsv
-    prop_file = args.proposalcsv
+    truth_file = args.truth_csv
+    prop_file = args.proposal_csv
 
     if args.challenge.lower() == 'off-nadir':
         evalSettings = {'miniou': 0.5,
