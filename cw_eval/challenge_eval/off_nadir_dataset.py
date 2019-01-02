@@ -2,6 +2,7 @@ from __future__ import print_function, with_statement, division
 
 import pandas as pd
 from cw_eval import baseeval as bF
+import re
 
 # Note, for mac osx compatability import something from shapely.geometry before
 # importing fiona or geopandas
@@ -35,7 +36,7 @@ def eval_off_nadir(prop_csv, truth_csv, imageColumns={}, miniou=0.5,
         Minimum area of ground truth regions to include in scoring calculation.
         Defaults to ``20``.
 
-    Returns
+    Returnss
     -------
 
     results_DF, results_DF_Full
@@ -94,7 +95,7 @@ def eval_off_nadir(prop_csv, truth_csv, imageColumns={}, miniou=0.5,
         }
 
     results_DF_Full['nadir-category'] = [
-        imageColumns[imageID.rsplit('_', 2)[0]]
+        imageColumns[get_collect_id(imageID)]
         for imageID in results_DF_Full['imageID'].values]
 
     results_DF = results_DF_Full.groupby(['nadir-category']).sum()
@@ -125,3 +126,11 @@ def eval_off_nadir(prop_csv, truth_csv, imageColumns={}, miniou=0.5,
         results_DF.loc[results_DF.index == indexVal, 'F1Score'] = F1Score
 
     return results_DF, results_DF_Full
+
+
+def get_collect_id(imageID):
+    """Get the collect ID for an image name using a regex."""
+    collect_id = re.findall('Atlanta_nadir[0-9]{1,2}_catid_[0-9A-Z]{16}',
+                            imageID)[0]
+
+    return collect_id
