@@ -85,8 +85,8 @@ To run the metric you can use the following command:
 ```
 spacenet_eval --help
 
-spacenet_eval --proposalcsv ./TestCases_SpaceNet4/AOI_6_Atlanta_Test_v3_prop_1extra.csv \
-              --truthcsv ./TestCases_SpaceNet4/AOI_6_Atlanta_Test_v3.csv \
+spacenet_eval --proposal_csv ./TestCases_SpaceNet4/AOI_6_Atlanta_Test_v3_prop_1extra.csv \
+              --truth_csv ./TestCases_SpaceNet4/AOI_6_Atlanta_Test_v3.csv \
               --challenge off-nadir \
               --output_file test.csv
 ```
