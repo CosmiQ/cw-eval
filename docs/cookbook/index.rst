@@ -5,4 +5,5 @@ CosmiQ Works Evaluation Cookbook
 
 .. toctree::
 
-   CSV_eval.ipynb
+   Chip_Eval.ipynb
+   Competition_Eval.ipynb
