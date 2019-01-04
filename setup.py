@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.3.1'
+version = '1.0.0'
 
 readme = ''
 
@@ -23,7 +23,7 @@ setup(name='cw_eval',
           'Topic :: Scientific/Engineering :: GIS'],
       keywords='spacenet machinelearning iou aws',
       author=u"David Lindenbaum and Nicholas Weir",
-      author_email='dlindenbaum@iqt.org',
+      author_email='nweir@iqt.org',
       url='https://github.com/CosmiQ/cw_eval',
       license='Apache-2.0',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
@@ -31,7 +31,7 @@ setup(name='cw_eval',
       include_package_data=True,
       install_requires=inst_reqs,
       extras_require=extra_reqs,
-      entry_points = {
+      entry_points={
           'console_scripts': ['spacenet_eval=cw_eval.challenge_eval.spacenet_eval:main']
       }
       )

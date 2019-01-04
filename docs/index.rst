@@ -1,28 +1,19 @@
-CosmiQ Works Evaluation (cw-eval) Documentation
-===============================================
+CosmiQ Works Evaluation (`cw-eval <https://github.com/cosmiq/cw-eval>`__) Documentation
+=============================================================================================
 :Author: `CosmiQ Works <https://www.cosmiqworks.org>`__
-:Version: |version|
+:Release: |release|
 :Copyright: 2018, CosmiQ Works
 :License: This work is licensed under an `Apache 2.0 License`__.
 
 .. __: https://www.apache.org/licenses/LICENSE-2.0
 
-Core functionality
-------------------
-.. automodule:: cw_eval.baseeval
-   :members:
-
-.. automodule:: cw_eval.evalfunctions
-   :members:
-
-SpaceNet Challenge eval code
-----------------------------
-.. automodule:: cw_eval.challenge_eval.off_nadir_dataset
-   :members:
-
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :name: mastertoc
+   :maxdepth: 3
+   :glob:
+
+   api
+   cookbook/index
 
 Indices and tables
 ------------------
