@@ -9,7 +9,7 @@
 <img align="center" src="https://readthedocs.org/projects/pip/badge/" alt="docs">
 <img align="center" src="https://img.shields.io/github/license/cosmiq/cw-eval.svg" alt="license">
 <img align="center" src="https://img.shields.io/docker/build/cosmiqworks/cw-eval.svg" alt="docker">
-<a href="https://codecov.io/gh/CosmiQ/cw-eval"><img src="https://codecov.io/gh/CosmiQ/cw-eval/branch/master/graph/badge.svg" /></a>
+<img src="https://codecov.io/gh/CosmiQ/cw-eval/branch/master/graph/badge.svg">
 </p>
 
 - [Installation Instructions](#installation-instructions)
