@@ -1,35 +1,35 @@
 # Prerequisites
-Please answer the following questions for yourself before submitting an issue.
+_Please answer the following questions for yourself before submitting an issue._
 - [ ] I am running the latest version
 - [ ] I checked the documentation and found no answer
 - [ ] I checked to make sure that this issue has not already been filed
 - [ ] I'm reporting the issue to the correct repository (for multi-repository projects)
 
 # Instructions
-Please complete the following sections of the issue template, removing irrelevant components.
+_Please complete the following sections of the issue template, removing irrelevant components._
 
 ---
 
 # Bug Report
-Remove this section if your issue is not a bug. Make sure to add the __Type: Bug__ label if it is.
+_Remove this section if your issue is not a bug. Make sure to add the __Type: Bug__ label if it is._
 
 ## Failure Information
-Please help provide information about the failure.
+_Please help provide information about the failure._
 
 ## Bug Report: Expected Behavior
-(Expected behavior that isn't occurring)
+_(Expected behavior that isn't occurring)_
 
 ## Bug Report: Current Behavior
-(Description of the current, buggy behavior)
+_(Description of the current, buggy behavior)_
 
 ## Bug Report: Steps to Reproduce
-Please provide detailed steps for reproducing the issue.
+_Please provide detailed steps for reproducing the issue._
 1. Step 1
 2. Step 2
 3. Etc.
 
 ## Bug Report: Context
-Please provide any relevant information about your setup. This is important in case the issue is not reproducible except for under certain conditions.
+_Please provide any relevant information about your setup. This is important in case the issue is not reproducible except for under certain conditions._
 - OS:
 - Python version:
 - `cw-eval` install method (Conda, pip, Docker):
@@ -37,24 +37,24 @@ Please provide any relevant information about your setup. This is important in c
 - Additional relevant environment details (e.g. using a virtual environment or not, version of GDAL and GDAL install method, etc.)
 
 ## Bug Report: Failure Logs
-Please include any relevant log snippets, python shell commands and tracebacks, etc. here.
+_Please include any relevant log snippets, python shell commands and tracebacks, etc. here._
 
 ---
 
 # Feature Request
-Remove this section if your issue is not a feature request. Make sure to add the __Type: Enhancement__ label if it is.
+_Remove this section if your issue is not a feature request. Make sure to add the __Type: Enhancement__ label if it is._
 ## Feature Description
-Please describe the feature you'd like implemented.
+_Please describe the feature you'd like implemented._
 
 ## Feature Request: Changes to API
-If your feature request includes changes to the `cw-eval` API, describe that here. Note that any changes to required arguments or argument order in the API will only be made at a major version release. See [the contributing guidelines]() for additional details.
+_If your feature request includes changes to the `cw-eval` API, describe that here. Note that any changes to required arguments or argument order in the API will only be made at a major version release. See [the contributing guidelines]() for additional details._
 
 ---
 
 # Final steps
 
 ## References to other issues/PRs
-If you did not already include references above, list references to relevant PRs, issues, or other pages here.
+_If you did not already include references above, list references to relevant PRs, issues, or other pages here._
 
 ## Labels
-Make sure to select a __Type__ label for your issue. The repo maintainers will add other labels, milestones, and projects (if applicable).
+_Make sure to select a __Type__ label for your issue. The repo maintainers will add other labels, milestones, and projects (if applicable)._
