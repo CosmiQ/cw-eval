@@ -1,5 +1,6 @@
 from __future__ import print_function, with_statement, division
 
+from tqdm import tqdm
 import pandas as pd
 from cw_eval import baseeval as bF
 import re
@@ -101,7 +102,7 @@ def eval_off_nadir(prop_csv, truth_csv, imageColumns={}, miniou=0.5,
     results_DF = results_DF_Full.groupby(['nadir-category']).sum()
 
     # Recalculate Values after Summation of AOIs
-    for indexVal in results_DF.index:
+    for indexVal in tqdm(results_DF.index):
         rowValue = results_DF[results_DF.index == indexVal]
         # Precision = TruePos / float(TruePos + FalsePos)
         if float(rowValue['TruePos'] + rowValue['FalsePos']) > 0:

@@ -1,6 +1,7 @@
 from __future__ import print_function, with_statement, division
 
 import shapely.wkt
+import numpy as np
 import geopandas as gpd
 import pandas as pd
 from tqdm import tqdm
@@ -8,7 +9,7 @@ import os
 from cw_eval import evalfunctions as eF
 from fiona.errors import DriverError
 from fiona._err import CPLE_OpenFailedError
-
+from multiprocessing import Pool
 
 class EvalBase():
     """Object to test IoU for predictions and ground truth polygons.
@@ -75,21 +76,26 @@ class EvalBase():
         """
 
         # Get List of all ImageIDs
-        imageIDList = []
-        imageIDList.extend(list(self.ground_truth_GDF[imageIDField].unique()))
+        image_id_list = list(self.ground_truth_GDF[imageIDField].unique())
         if not self.proposal_GDF.empty:
-            imageIDList.extend(list(self.proposal_GDF[imageIDField].unique()))
-        imageIDList = list(set(imageIDList))
+            prop_image_id_list = list(self.proposal_GDF[imageIDField].unique())
+            prop_extra = [i for i in prop_image_id_list
+                          if i not in image_id_list]
+            if prop_extra:
+                print('WARNING: the following image IDs were in the proposal' +
+                      ' but not the ground truth:')
+                print(', '.join(prop_extra))
+            image_id_list.extend(
+                list(self.proposal_GDF[imageIDField].unique()))
+        image_id_list = list(set(image_id_list))
         iou_field = iou_field_prefix
         scoring_dict_list = []
 
-        for imageID in tqdm(imageIDList):
+        for imageID in tqdm(image_id_list):
             self.ground_truth_GDF_Edit = self.ground_truth_GDF[
-                self.ground_truth_GDF[imageIDField] == imageID
+                (self.ground_truth_GDF[imageIDField] == imageID) &
+                (self.ground_truth_GDF.area >= minArea)
                 ].copy(deep=True)
-            self.ground_truth_GDF_Edit = self.ground_truth_GDF_Edit[
-                self.ground_truth_GDF_Edit.area >= minArea
-                ]
             proposal_GDF_copy = self.proposal_GDF[self.proposal_GDF[imageIDField] == imageID].copy(deep=True)
             proposal_GDF_copy = proposal_GDF_copy[proposal_GDF_copy.area > minArea]
             if debug:
@@ -408,6 +414,42 @@ class EvalBase():
 
     def eval(self, type='iou'):
         pass
+
+    def calc_max_iou(self, subset_id, min_iou=0.5):
+        """Calculate the max IoU value for a subset of building proposals."""
+        prop_subset = self.proposal_GDF.loc[
+            self.proposal_GDF['ImageId'].str.contains(subset_id)]
+        if 'ImageId' in self.ground_truth_GDF.columns:
+            gt_subset = self.ground_truth_GDF.loc[
+                self.ground_truth_GDF['ImageId'].str.contains(subset_id)]
+        else:
+            gt_subset = self.ground_truth_GDF
+        score_df = eF.gdal_best_IoU(prop_subset, gt_subset)
+        score_df['subset_id'] = subset_id
+        tp = np.sum(score_df['iou'] >= min_iou)
+        fp = np.sum(score_df['iou'] < min_iou)
+        fn = len(gt_subset) - tp
+        fn_ids = pd.Series([i for i in range(len(gt_subset))])
+        fn_ids = fn_ids[fn_ids.isin(score_df['gdf2_idx'])]
+        return subset_id, score_df, {'tp': tp, 'fp': fp, 'fn': fn}, fn_ids
+
+    def parallel_iou(self, subset_ids, workers=1):
+        """Calculate IoU scores for subsets of proposals in parallel."""
+        with Pool(processes=workers) as pool:
+            results = pool.starmap(self.calc_max_iou, subset_ids)
+        results_by_subset = pd.Dataframe({'subset_id': [r[0] for r in results],
+                                          'tp': [r[2]['tp'] for r in results],
+                                          'fp': [r[2]['fp'] for r in results],
+                                          'fn': [r[2]['fn'] for r in results]})
+        results_by_subset['precision'] = results_by_subset['tp'] /    \
+            (results_by_subset['tp'] + results_by_subset['fp'])
+        results_by_subset['recall'] = results_by_subset['tp'] /       \
+            (results_by_subset['tp'] + results_by_subset['fn'])
+        results_by_subset['f1'] = \
+            2*results_by_subset['precision']*results_by_subset['recall'] /    \
+            (results_by_subset['precision'] + results_by_subset['recall'])
+        full_proposal_results = pd.concat([r[1] for r in results], axis=0)
+        return results_by_subset, full_proposal_results
 
 
 def eval_base(ground_truth_vector_file, csvFile=False,
