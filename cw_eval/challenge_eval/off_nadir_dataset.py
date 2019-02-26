@@ -37,7 +37,7 @@ def eval_off_nadir(prop_csv, truth_csv, imageColumns={}, miniou=0.5,
         Minimum area of ground truth regions to include in scoring calculation.
         Defaults to ``20``.
 
-    Returnss
+    Returns
     -------
 
     results_DF, results_DF_Full

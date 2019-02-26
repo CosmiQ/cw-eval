@@ -6,10 +6,13 @@ import geopandas as gpd
 import pandas as pd
 from tqdm import tqdm
 import os
+import warnings
 from cw_eval import evalfunctions as eF
 from fiona.errors import DriverError
 from fiona._err import CPLE_OpenFailedError
 from multiprocessing import Pool
+import sys
+
 
 class EvalBase():
     """Object to test IoU for predictions and ground truth polygons.
@@ -349,6 +352,8 @@ class EvalBase():
                         proposal_vector_file).dropna()
                 except (CPLE_OpenFailedError, DriverError):
                     self.proposal_GDF = gpd.GeoDataFrame(geometry=[])
+            self.proposal_GDF.geometry = self.proposal_GDF.geometry.apply(
+                _fix_bad_geom)
 
             if conf_field_list:
                 self.proposal_GDF['__total_conf'] = self.proposal_GDF[
@@ -367,6 +372,8 @@ class EvalBase():
             self.proposal_GDF = self.proposal_GDF.sort_values(
                 by='__total_conf', ascending=False)
         else:
+            warnings.warn('{} is not a valid vector file.'.format(
+                proposal_vector_file))
             self.proposal_GDF = gpd.GeoDataFrame(geometry=[])
 
     def load_truth(self, ground_truth_vector_file, truthCSV=False,
@@ -415,8 +422,10 @@ class EvalBase():
     def eval(self, type='iou'):
         pass
 
-    def calc_max_iou(self, subset_id, min_iou=0.5):
+    def calc_max_iou(self, subset_id, min_iou=0.5, min_area=20):
         """Calculate the max IoU value for a subset of building proposals."""
+        print('Beginning {}'.format(subset_id))
+        sys.stdout.flush()
         prop_subset = self.proposal_GDF.loc[
             self.proposal_GDF['ImageId'].str.contains(subset_id)]
         if 'ImageId' in self.ground_truth_GDF.columns:
@@ -424,10 +433,10 @@ class EvalBase():
                 self.ground_truth_GDF['ImageId'].str.contains(subset_id)]
         else:
             gt_subset = self.ground_truth_GDF
-        score_df = eF.gdal_best_IoU(prop_subset, gt_subset)
+        score_df = eF.gdal_best_IoU(prop_subset, gt_subset, min_area=min_area)
         score_df['subset_id'] = subset_id
-        tp = np.sum(score_df['iou'] >= min_iou)
-        fp = np.sum(score_df['iou'] < min_iou)
+        tp = np.sum(score_df['iou_score'] >= min_iou)
+        fp = np.sum(score_df['iou_score'] < min_iou)
         fn = len(gt_subset) - tp
         fn_ids = pd.Series([i for i in range(len(gt_subset))])
         fn_ids = fn_ids[fn_ids.isin(score_df['gdf2_idx'])]
@@ -436,8 +445,9 @@ class EvalBase():
     def parallel_iou(self, subset_ids, workers=1):
         """Calculate IoU scores for subsets of proposals in parallel."""
         with Pool(processes=workers) as pool:
-            results = pool.starmap(self.calc_max_iou, subset_ids)
-        results_by_subset = pd.Dataframe({'subset_id': [r[0] for r in results],
+            results = pool.map(self.calc_max_iou, iter(subset_ids),
+                               chunksize=1)
+        results_by_subset = pd.DataFrame({'subset_id': [r[0] for r in results],
                                           'tp': [r[2]['tp'] for r in results],
                                           'fp': [r[2]['fp'] for r in results],
                                           'fn': [r[2]['fn'] for r in results]})
@@ -460,3 +470,15 @@ def eval_base(ground_truth_vector_file, csvFile=False,
         Use :class:`EvalBase` instead."""
 
     return EvalBase(ground_truth_vector_file)
+
+
+def _fix_bad_geom(geom):
+    """Fix self-intersecting geometries."""
+    if type(geom) is not shapely.geometry.Polygon:
+        # if it's not a polygon
+        warnings.warn('{} is not a polygon object'.format(geom))
+        return shapely.geometry.Polygon()
+    if geom.is_valid:
+        return geom
+    else:
+        return geom.buffer(0.0)

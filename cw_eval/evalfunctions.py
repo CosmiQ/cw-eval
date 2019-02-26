@@ -1,7 +1,7 @@
 from __future__ import print_function, with_statement, division
 import pandas as pd
 from osgeo import ogr
-
+from rtree.core import RTreeError
 
 def process_iou(pred_poly, test_data_GDF, remove_matching_element=True):
     """Get the maximum intersection over union score for a predicted polygon.
@@ -61,9 +61,13 @@ def find_max_IoU(geom_a, geom_b_list, geom_b_idxs=None, min_area=0):
     for idx, geom_b in zip(geom_b_idxs, geom_b_list):
         if geom_b.GetArea() < min_area:
             continue
-        intersect = geom_a.Intersection(geom_b).GetArea()
-        union = geom_a.Union(geom_b).GetArea()
-        iou = intersect/union
+        # use try/except below to catch rare cases of bad geometry/non-overlap
+        try:
+            intersect = geom_a.Intersection(geom_b).GetArea()
+            union = geom_a.Union(geom_b).GetArea()
+            iou = intersect/union
+        except AttributeError:
+            iou = 0
         if iou > 0.5:
             # there can be no other object with better IoU, so return it
             return idx, iou
@@ -131,7 +135,8 @@ def gdal_best_IoU(gdf1, gdf2, min_area=0):
     interactions = interactions.apply(pd.Series)
     result_df = pd.concat([gdf1.index.to_series().rename('gdf1_idx'),
                            interactions[0].rename('gdf2_idx'),
-                           interactions[1].rename('iou_score')], axis=1)
+                           interactions[1].rename('iou_score')],
+                          axis=1)
     return result_df
 
 
@@ -142,6 +147,13 @@ def _find_max_IoU_gdf(row, min_area=0):
                         row['gdf2_geom_idxs'],
                         min_area)
 
+
+def _get_intersectors(bbox, spatial_index):
+    try:
+        intersectors = list(spatial_index.intersection(bbox))
+    except RTreeError:
+        intersectors = []
+    return intersectors
 
 ### DEPRECATED: DON'T USE!!! ###
 def calculate_iou(pred_poly, test_data_GDF):
