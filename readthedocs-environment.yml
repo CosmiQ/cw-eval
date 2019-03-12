@@ -13,3 +13,4 @@ dependencies:
   - numpy
   - tqdm
   - rtree
+  - pandoc=1.12.1
