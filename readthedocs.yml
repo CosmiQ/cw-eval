@@ -1,6 +1,16 @@
+version: 2
+formats:
+  - htmlzip
+  - pdf
+
 python:
-  version: 3
-  pip_install: true
+  version: 3.6
+  install:
+    - method: pip
+      path: .
   setup_py_install: true
 conda:
-  file: readthedocs-environment.yml
+  environment: readthedocs-environment.yml
+
+build:
+  image: latest
