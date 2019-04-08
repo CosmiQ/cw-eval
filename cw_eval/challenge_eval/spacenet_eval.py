@@ -34,7 +34,7 @@ def main():
     elif args.challenge.lower() == 'spaceNet-buildings2'.lower():
         evalSettings = {'miniou': 0.5,
                         'minArea': 20}
-        results_DF, results_DF_Full = spacenet_buildings2_dataset.eval_off_nadir(
+        results_DF, results_DF_Full = spacenet_buildings2_dataset.eval_spacenet_buildings2(
             prop_csv=prop_file, truth_csv=truth_file, **evalSettings)
 
     with pd.option_context('display.max_rows', None,
