@@ -14,7 +14,7 @@ class TestEvalSpaceNetBuildings2(object):
                                                 'SN2_test_results.csv'))
         pred_results_full = pd.read_csv(os.path.join(cw_eval.data.data_dir,
                                                      'test_results_full.csv'))
-        results_df, results_df_full = eval_off_nadir(
+        results_df, results_df_full = eval_spacenet_buildings2(
             os.path.join(cw_eval.data.data_dir, 'SN2_sample_preds.csv'),
             os.path.join(cw_eval.data.data_dir, 'SN2_sample_truth.csv')
             )
