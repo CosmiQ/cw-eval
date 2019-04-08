@@ -10,13 +10,10 @@ import re
 # rasterio or fiona
 
 
-def eval_spacenet_buildings2(prop_csv, truth_csv, imageColumns={}, miniou=0.5,
-                   minArea=20):
+def eval_spacenet_buildings2(prop_csv, truth_csv, miniou=0.5, minArea=20):
     """Evaluate a SpaceNet2 building footprint competition proposal csv.
 
-    Uses :class:`EvalBase` to evaluate SpaceNet2 challenge proposals. See
-    ``imageColumns`` in the source code for how collects are broken into
-    Nadir, Off-Nadir, and Very-Off-Nadir bins. <--Update this
+    Uses :class:`EvalBase` to evaluate SpaceNet2 challenge proposals.
 
     Arguments
     ---------
@@ -24,11 +21,6 @@ def eval_spacenet_buildings2(prop_csv, truth_csv, imageColumns={}, miniou=0.5,
         Path to the proposal polygon CSV file.
     truth_csv : str
         Path to the ground truth polygon CSV file.
-    imageColumns : dict, optional
-        dict of ``(collect: nadir bin)`` pairs used to separate collects into
-        sets. Nadir bin values must be one of
-        ``["Nadir", "Off-Nadir", "Very-Off-Nadir"]`` . See source code for
-        collect name options. <--Update this
     miniou : float, optional
         Minimum IoU score between a region proposal and ground truth to define
         as a successful identification. Defaults to 0.5.
@@ -63,42 +55,10 @@ def eval_spacenet_buildings2(prop_csv, truth_csv, imageColumns={}, miniou=0.5,
                                                )
     results_DF_Full = pd.DataFrame(results)
 
-    if not imageColumns:
-        imageColumns = {
-            'Atlanta_nadir7_catid_1030010003D22F00': "Nadir",
-            'Atlanta_nadir8_catid_10300100023BC100': "Nadir",
-            'Atlanta_nadir10_catid_1030010003993E00': "Nadir",
-            'Atlanta_nadir10_catid_1030010003CAF100': "Nadir",
-            'Atlanta_nadir13_catid_1030010002B7D800': "Nadir",
-            'Atlanta_nadir14_catid_10300100039AB000': "Nadir",
-            'Atlanta_nadir16_catid_1030010002649200': "Nadir",
-            'Atlanta_nadir19_catid_1030010003C92000': "Nadir",
-            'Atlanta_nadir21_catid_1030010003127500': "Nadir",
-            'Atlanta_nadir23_catid_103001000352C200': "Nadir",
-            'Atlanta_nadir25_catid_103001000307D800': "Nadir",
-            'Atlanta_nadir27_catid_1030010003472200': "Off-Nadir",
-            'Atlanta_nadir29_catid_1030010003315300': "Off-Nadir",
-            'Atlanta_nadir30_catid_10300100036D5200': "Off-Nadir",
-            'Atlanta_nadir32_catid_103001000392F600': "Off-Nadir",
-            'Atlanta_nadir34_catid_1030010003697400': "Off-Nadir",
-            'Atlanta_nadir36_catid_1030010003895500': "Off-Nadir",
-            'Atlanta_nadir39_catid_1030010003832800': "Off-Nadir",
-            'Atlanta_nadir42_catid_10300100035D1B00': "Very-Off-Nadir",
-            'Atlanta_nadir44_catid_1030010003CCD700': "Very-Off-Nadir",
-            'Atlanta_nadir46_catid_1030010003713C00': "Very-Off-Nadir",
-            'Atlanta_nadir47_catid_10300100033C5200': "Very-Off-Nadir",
-            'Atlanta_nadir49_catid_1030010003492700': "Very-Off-Nadir",
-            'Atlanta_nadir50_catid_10300100039E6200': "Very-Off-Nadir",
-            'Atlanta_nadir52_catid_1030010003BDDC00': "Very-Off-Nadir",
-            'Atlanta_nadir53_catid_1030010003193D00': "Very-Off-Nadir",
-            'Atlanta_nadir53_catid_1030010003CD4300': "Very-Off-Nadir",
-        }
-
-    results_DF_Full['nadir-category'] = [
-        imageColumns[get_collect_id(imageID)]
+    results_DF_Full['AOI'] = [ get_aoi(imageID)
         for imageID in results_DF_Full['imageID'].values]
 
-    results_DF = results_DF_Full.groupby(['nadir-category']).sum()
+    results_DF = results_DF_Full.groupby(['AOI']).sum()
 
     # Recalculate Values after Summation of AOIs
     for indexVal in results_DF.index:
@@ -128,9 +88,6 @@ def eval_spacenet_buildings2(prop_csv, truth_csv, imageColumns={}, miniou=0.5,
     return results_DF, results_DF_Full
 
 
-def get_collect_id(imageID):
-    """Get the collect ID for an image name using a regex."""
-    collect_id = re.findall('Atlanta_nadir[0-9]{1,2}_catid_[0-9A-Z]{16}',
-                            imageID)[0]
-
-    return collect_id
+def get_aoi(imageID):
+    """Get the AOI from an image name"""
+    return '_'.join(imageID.split('_')[:-1])
