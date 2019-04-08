@@ -14,7 +14,7 @@ def main():
                         help='Proposal CSV')
     parser.add_argument('--truth_csv', '-t', type=str,
                         help='Truth CSV')
-    parser.add_argument('--challenge', type=str,
+    parser.add_argument('--challenge', '-c', type=str,
                         default='off-nadir',
                         choices=supported_challenges,
                         help='SpaceNet Challenge eval type')
