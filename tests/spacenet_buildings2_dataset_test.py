@@ -1,5 +1,6 @@
 import os
-from cw_eval.challenge_eval.spacenet_buildings2_dataset import eval_spacenet_buildings2
+from cw_eval.challenge_eval.spacenet_buildings2_dataset \
+    import eval_spacenet_buildings2
 import cw_eval
 import subprocess
 import pandas as pd
@@ -54,7 +55,7 @@ class TestEvalCLISN2(object):
         assert pred_results_full.sort_values(by='imageID') \
                                 .reset_index(drop=True) \
                                 .equals(full_test_results
-                                        .sort_values(by='imageID') \
+                                        .sort_values(by='imageID')
                                         .reset_index(drop=True))
 
 
