@@ -4,7 +4,8 @@ from cw_eval.challenge_eval import off_nadir_dataset
 from cw_eval.challenge_eval import spacenet_buildings2_dataset
 import argparse
 import pandas as pd
-supported_challenges = ['off-nadir', 'spaceNet-buildings2']#, 'spaceNet-buildings1', 'spacenet-roads1', 'buildings', 'roads']
+supported_challenges = ['off-nadir', 'spaceNet-buildings2']
+#, 'spaceNet-buildings1', 'spacenet-roads1', 'buildings', 'roads']
 
 
 def main():

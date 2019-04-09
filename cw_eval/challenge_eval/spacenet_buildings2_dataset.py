@@ -55,8 +55,8 @@ def eval_spacenet_buildings2(prop_csv, truth_csv, miniou=0.5, minArea=20):
                                                )
     results_DF_Full = pd.DataFrame(results)
 
-    results_DF_Full['AOI'] = [ get_aoi(imageID)
-        for imageID in results_DF_Full['imageID'].values]
+    results_DF_Full['AOI'] = [get_aoi(imageID) for imageID
+                              in results_DF_Full['imageID'].values]
 
     results_DF = results_DF_Full.groupby(['AOI']).sum()
 
