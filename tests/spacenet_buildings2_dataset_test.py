@@ -13,13 +13,17 @@ class TestEvalSpaceNetBuildings2(object):
         pred_results = pd.read_csv(os.path.join(cw_eval.data.data_dir,
                                                 'SN2_test_results.csv'))
         pred_results_full = pd.read_csv(os.path.join(cw_eval.data.data_dir,
-                                                     'test_results_full.csv'))
+                                                     'SN2_test_results_full.csv'))
         results_df, results_df_full = eval_spacenet_buildings2(
             os.path.join(cw_eval.data.data_dir, 'SN2_sample_preds.csv'),
             os.path.join(cw_eval.data.data_dir, 'SN2_sample_truth.csv')
             )
-        assert pred_results.equals(results_df.reset_index())
-        assert pred_results_full.equals(results_df_full)
+
+        results_df_formatted = results_df.reset_index(drop=True)
+        pred_results_full_sorted = pred_results_full.sort_values('imageID').reset_index(drop=True)
+        results_df_full_sorted = results_df_full.sort_values('imageID').reset_index(drop=True)
+        assert almostequal(pred_results, results_df_formatted)
+        assert almostequal(pred_results_full_sorted, results_df_full_sorted)
 
 
 class TestEvalCLISN2(object):
@@ -44,3 +48,22 @@ class TestEvalCLISN2(object):
         assert pred_results.equals(test_results)
         assert pred_results_full.sort_values(by='imageID').reset_index(drop=True).equals(
             full_test_results.sort_values(by='imageID').reset_index(drop=True))
+
+
+
+def almostequal(df1, df2, epsilon=1E-9):
+    """
+    Reports whether two dataframes are "almost" equal, allowing for a specified
+    rounding error.  Non-identical elements that are not integers or floats
+    result in an error.
+    """
+    if df1.shape != df2.shape:
+        return False
+    for i in range( (df1.shape)[0] ):
+        for j in range( (df1.shape)[1] ):
+            val1 = df1.iloc[i,j]
+            val2 = df2.iloc[i,j]
+            if val1 != val2:
+                if abs(val2-val1) > 0.5*epsilon*(abs(val1)+abs(val2)):
+                    return False
+    return True
